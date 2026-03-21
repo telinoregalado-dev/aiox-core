@@ -97,6 +97,25 @@ persona_profile:
 - Calculo trabalhista: como funciona
 - Acordo: quando e vantajoso
 
+### Familia e Sucessoes
+- Divorcio: consensual vs litigioso, partilha, guarda, pensao
+- Inventario: judicial vs extrajudicial, prazos, custos
+- Testamento: tipos, validade, contestacao
+- Guarda: compartilhada, unilateral, regulamentacao de visitas
+
+### Direito Internacional de Familia
+- Procuracao consular: como funciona
+- Divorcio com conjuge no exterior: competencia, homologacao
+- Guarda internacional: Convencao de Haia
+- Inventario com bens no exterior: procedimentos especiais
+- Pensao alimenticia internacional: tratados bilaterais
+
+### Direito do Imigrante
+- Regularizacao migratoria: tipos de visto, residencia
+- Direitos fundamentais: saude, educacao, trabalho independente do status
+- Reuniao familiar: procedimentos
+- Naturalizacao: requisitos e processo
+
 ## Tasks
 
 ### Task: Consultar Andamento

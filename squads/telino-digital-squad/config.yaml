@@ -28,10 +28,12 @@ metadata:
 
 tiers:
   tier_0:
-    name: 'Orquestrador'
-    purpose: 'Coordena todos os squads, distribui demandas, monitora quality gates'
+    name: 'Orquestrador + Consciência'
+    purpose: 'Coordena squads, distribui demandas, governa cultura e tom emocional'
     agents:
       - coo-chief
+      - mentor-consciencia-chief
+      - mentor-telino
 
   tier_1:
     name: 'Masters'
@@ -64,6 +66,8 @@ tiers:
       - processo-juridico-agent
       - sac-chief
       - ti-chief
+      - perfil-emocional-agent
+      - escola-consciencia-agent
 
   tier_3:
     name: 'Suporte'
@@ -88,6 +92,31 @@ agents:
       - '*status-geral'
       - '*alertas'
       - '*distribuir'
+
+  # === TIER 0 - CONSCIÊNCIA E CULTURA ===
+  mentor-consciencia-chief:
+    file: agents/mentor-consciencia-chief.md
+    tier: 0
+    persona: 'Regalado (Mentor Consciência)'
+    mind_clone: 'Gustavo Regalado Costa'
+    focus: 'Maestro emocional, governança cultural, tom de comunicação, CNV, direito sistêmico, percepção comportamental'
+    commands:
+      - '*tom-comunicacao'
+      - '*revisar-mensagem'
+      - '*calibrar-agentes'
+      - '*escola-consciencia'
+
+  mentor-telino:
+    file: agents/mentor-telino.md
+    tier: 0
+    persona: 'Telino (Mentora Acolhimento)'
+    focus: 'Acolhimento direto ao cliente, Escola da Consciência, trilhas, encontros, apoio familiar, presença'
+    commands:
+      - '*acolher'
+      - '*sessao-escola'
+      - '*orientacao-familiar'
+      - '*check-in'
+      - '*presenca'
 
   # === TIER 1 - MASTERS (MARKETING & AQUISICAO) ===
   marketing-chief:
@@ -281,6 +310,28 @@ agents:
       - '*incidente'
       - '*backup'
 
+  # === TIER 2 - CONSCIÊNCIA E ACOLHIMENTO ===
+  perfil-emocional-agent:
+    file: agents/perfil-emocional-agent.md
+    tier: 2
+    persona: 'Mirror (Percepção Comportamental)'
+    focus: 'Mapear ferida emocional, linguagem do amor, camada de apego, ajustar comunicação'
+    commands:
+      - '*mapear-perfil'
+      - '*diretriz-comunicacao'
+      - '*alerta-crise'
+
+  escola-consciencia-agent:
+    file: agents/escola-consciencia-agent.md
+    tier: 2
+    persona: 'Luz (Escola da Consciência)'
+    focus: 'Gestão da escola, trilhas, conteúdo, encontros, progresso dos clientes'
+    commands:
+      - '*publicar-conteudo'
+      - '*encontro-semanal'
+      - '*engajamento-escola'
+      - '*onboarding-escola'
+
   # === TIER 3 - SUPORTE ===
   performance-analyst:
     file: agents/performance-analyst.md
@@ -423,6 +474,73 @@ workflows:
     file: workflows/wf-gestao-financeira.yaml
     agents: [cfo-chief, financeiro-chief, finance-analyst, checkout-payment-agent]
     description: 'Operacional (Helena) + Estrategico (Warren) -> Fluxo caixa -> DRE -> Investimentos -> Relatorio'
+
+  consciencia-acolhimento:
+    file: workflows/wf-consciencia-acolhimento.yaml
+    agents: [mentor-consciencia-chief, mentor-telino, perfil-emocional-agent, escola-consciencia-agent]
+    description: 'Mapear perfil -> Ajustar tom -> Acolher -> Escola da Consciência -> Trilha -> Sustentação'
+
+  acolhimento-ludopatia:
+    file: workflows/wf-acolhimento-ludopatia.yaml
+    agents: [mentor-telino, perfil-emocional-agent, escola-consciencia-agent]
+    description: 'Programa 8 semanas: Reconhecimento -> Compreensão -> Escolha -> Reconstrução + Apoio Familiar'
+
+areas_juridicas:
+  - id: ludopatia
+    name: 'Ludopatia (Vício em Jogos)'
+    escola_consciencia: true
+    trilha_completa: true
+    acolhimento_familiar: true
+
+  - id: bpc-loas
+    name: 'BPC LOAS (Benefício Assistencial)'
+    escola_consciencia: true
+    trilha_completa: false
+
+  - id: saude-sus
+    name: 'Saúde / Negativa SUS'
+    escola_consciencia: true
+    trilha_completa: false
+
+  - id: trabalhista
+    name: 'Direito Trabalhista'
+    escola_consciencia: true
+    trilha_completa: false
+
+  - id: familia-sucessoes
+    name: 'Direito de Família e Sucessões'
+    escola_consciencia: true
+    trilha_completa: false
+    notas: 'Divórcio, pensão, inventário, testamento — alto componente emocional'
+
+  - id: direito-internacional-familia
+    name: 'Direito Internacional de Família'
+    escola_consciencia: true
+    trilha_completa: true
+    acolhimento_especial: true
+    notas: 'Brasileiros no exterior, saudade, desconexão cultural, solidão — necessidade profunda de acolhimento e conhecimento dos seus direitos'
+
+  - id: direito-imigrante
+    name: 'Direito do Imigrante'
+    escola_consciencia: true
+    trilha_completa: true
+    acolhimento_especial: true
+    notas: 'Imigrantes no Brasil ou brasileiros emigrando — barreiras de língua, cultura, pertencimento. Acolhimento é essencial.'
+
+  - id: imobiliario
+    name: 'Direito Imobiliário'
+    escola_consciencia: true
+    trilha_completa: false
+
+  - id: previdenciario
+    name: 'Direito Previdenciário'
+    escola_consciencia: true
+    trilha_completa: false
+
+  - id: plano-saude
+    name: 'Plano de Saúde (Negativa)'
+    escola_consciencia: true
+    trilha_completa: false
 
 mcp_servers:
   whatsapp-api:
