@@ -1,0 +1,103 @@
+{
+  "posts": 50,
+  "byType": {
+    "CAROUSEL_ALBUM": {
+      "count": 13,
+      "likes": 139,
+      "comments": 15
+    },
+    "VIDEO": {
+      "count": 23,
+      "likes": 301,
+      "comments": 29
+    },
+    "IMAGE": {
+      "count": 14,
+      "likes": 80,
+      "comments": 6
+    }
+  },
+  "byDay": {
+    "Qua": {
+      "count": 11,
+      "likes": 104,
+      "comments": 7
+    },
+    "Seg": {
+      "count": 7,
+      "likes": 47,
+      "comments": 1
+    },
+    "Dom": {
+      "count": 6,
+      "likes": 64,
+      "comments": 12
+    },
+    "Sáb": {
+      "count": 5,
+      "likes": 78,
+      "comments": 8
+    },
+    "Sex": {
+      "count": 9,
+      "likes": 103,
+      "comments": 2
+    },
+    "Qui": {
+      "count": 6,
+      "likes": 61,
+      "comments": 11
+    },
+    "Ter": {
+      "count": 6,
+      "likes": 63,
+      "comments": 9
+    }
+  },
+  "byPilar": {
+    "educacional": {
+      "count": 21,
+      "likes": 180
+    },
+    "juridico": {
+      "count": 7,
+      "likes": 82
+    },
+    "emocional": {
+      "count": 2,
+      "likes": 25
+    },
+    "autoridade": {
+      "count": 3,
+      "likes": 79
+    },
+    "cta": {
+      "count": 0,
+      "likes": 0
+    },
+    "outro": {
+      "count": 17,
+      "likes": 154
+    }
+  },
+  "insights": [
+    {
+      "name": "reach",
+      "period": "day",
+      "values": [
+        {
+          "value": 1990,
+          "end_time": "2026-03-19T07:00:00+0000"
+        },
+        {
+          "value": 265,
+          "end_time": "2026-03-20T07:00:00+0000"
+        }
+      ],
+      "title": "Alcance",
+      "description": "Número total de vezes que os objetos de mídia da conta comercial foram visualizados unicamente",
+      "id": "17841436302285399/insights/reach/day"
+    }
+  ],
+  "generatedAt": "2026-03-20T20:30:51.266Z"
+}

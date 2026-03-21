@@ -1,0 +1,96 @@
+name: Instagram Daily Post
+
+on:
+  schedule:
+    # Runs every day at 11:00 UTC (08:00 BRT)
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Pipeline command (auto, check, generate, status)'
+        required: false
+        default: 'auto'
+
+jobs:
+  daily-post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore pipeline state
+        uses: actions/cache@v4
+        with:
+          path: |
+            instagram/calendar.json
+            instagram/pipeline-state.json
+          key: instagram-pipeline-${{ github.run_number }}
+          restore-keys: |
+            instagram-pipeline-
+
+      - name: Run pipeline
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          GOOGLE_WORKSPACE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_WORKSPACE_OAUTH_CLIENT_ID }}
+          GOOGLE_WORKSPACE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_WORKSPACE_OAUTH_CLIENT_SECRET }}
+          GOOGLE_WORKSPACE_REFRESH_TOKEN: ${{ secrets.GOOGLE_WORKSPACE_REFRESH_TOKEN }}
+          DIGISAC_API_TOKEN: ${{ secrets.DIGISAC_API_TOKEN }}
+        run: |
+          COMMAND="${{ github.event.inputs.command || 'auto' }}"
+          node instagram/daily-pipeline.cjs $COMMAND
+
+      - name: Save pipeline state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            instagram/calendar.json
+            instagram/pipeline-state.json
+          key: instagram-pipeline-${{ github.run_number }}
+
+  # Separate job to check approvals (runs every 2 hours during business hours)
+  check-approvals:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    strategy:
+      matrix:
+        # Additional check times: 13:00, 15:00, 17:00, 19:00 UTC (10-16h BRT)
+        # Using matrix to document intent, actual scheduling below
+        check: [1]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore pipeline state
+        uses: actions/cache@v4
+        with:
+          path: |
+            instagram/calendar.json
+            instagram/pipeline-state.json
+          key: instagram-pipeline-
+          restore-keys: |
+            instagram-pipeline-
+
+      - name: Check approvals
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          GOOGLE_WORKSPACE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_WORKSPACE_OAUTH_CLIENT_ID }}
+          GOOGLE_WORKSPACE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_WORKSPACE_OAUTH_CLIENT_SECRET }}
+          GOOGLE_WORKSPACE_REFRESH_TOKEN: ${{ secrets.GOOGLE_WORKSPACE_REFRESH_TOKEN }}
+          DIGISAC_API_TOKEN: ${{ secrets.DIGISAC_API_TOKEN }}
+        run: node instagram/daily-pipeline.cjs check
