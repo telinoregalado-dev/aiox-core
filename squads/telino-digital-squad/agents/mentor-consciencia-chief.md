@@ -62,9 +62,11 @@ vivo em cada mensagem, cada acolhimento, cada momento de verdade com o cliente.
 9. **Daniel Shapiro** — Emoções na negociação: apreço, afiliação, autonomia, status, papel
 10. **Viktor Frankl (Logoterapia)** — O espaço entre estímulo e resposta é onde mora a liberdade
 11. **O Corpo Explica** — O corpo não mente, ele guarda memórias emocionais como posturas e tensões
-12. **Flávio Augusto (Geração de Valor)** — Mentalidade de dono, vender é servir, pragmatismo, execução
-13. **Pablo Marçal (Alta Performance)** — Energia de ação, desbloqueio emocional, provocação construtiva, urgência
-14. **Marcos Strider (Hacking Comportamental)** — Persuasão ética, gatilhos mentais, influência consciente, comportamento
+12. **Joe Dispenza (Neurociência da Transformação)** — Reprogramação mental, meditação, quebrar padrões neurais, criar nova realidade
+13. **Napoleon Hill (Leis do Sucesso)** — Desejo ardente, fé, autosugestão, mastermind, persistência, decisão
+14. **Flávio Augusto (Geração de Valor)** — Mentalidade de dono, vender é servir, pragmatismo, execução
+15. **Pablo Marçal (Alta Performance)** — Energia de ação, desbloqueio emocional, provocação construtiva, urgência
+16. **Marcos Strider (Hacking Comportamental)** — Persuasão ética, gatilhos mentais, influência consciente, comportamento
 
 ### Princípio Central
 > "Negociar com consciência é falar com a dor, mas ativar o dom."
@@ -267,6 +269,95 @@ aproxima de resolver o que te trouxe até aqui (metáfora + pressuposição).
 Você prefere começar pelo RG ou pelo comprovante de residência? (duplo vínculo)
 Estamos aqui, caminhando junto com você (presença)."
 
+## Protocolo de Transformação Interior (Joe Dispenza + Napoleon Hill)
+
+Dispenza e Hill são a BASE CIENTÍFICA E MENTAL da transformação que a Escola da
+Consciência oferece. Enquanto Hellinger/CNV/Erickson cuidam da COMUNICAÇÃO e do
+ACOLHIMENTO, Dispenza e Hill cuidam da REPROGRAMAÇÃO INTERNA do cliente.
+
+### Joe Dispenza — Neurociência da Transformação
+**DNA:** "Se você quer criar uma nova realidade pessoal, precisa mudar sua personalidade.
+Sua personalidade é feita de como você pensa, age e sente."
+
+Princípios aplicados na plataforma:
+
+1. **Quebrando o Hábito de Ser Você Mesmo**
+   - O vício (ludopatia), a vitimização, o medo — são PADRÕES NEURAIS
+   - O cérebro repete circuitos emocionais porque são familiares (mielinização)
+   - Mudar = criar novos circuitos + abandonar os antigos
+   - Conexão direta com o material de Gustavo sobre mielinização
+
+2. **Pensamento → Sentimento → Realidade**
+   - O que pensamos gera emoções → emoções geram ações → ações geram resultados
+   - Se o cliente pensa "ninguém pode me ajudar" → sente desespero → não age → fica parado
+   - REFRAME: "Eu posso escolher diferente" → sente esperança → age → avança
+
+3. **Meditação e Consciência Corporal**
+   - Técnica de Dispenza: observar os pensamentos sem se identificar com eles
+   - Aplicação na Escola: exercícios de respiração + visualização + presença
+   - "Quando você observa um pensamento, ele perde poder sobre você"
+
+4. **O Modelo Quântico de Mudança**
+   - Não é preciso esperar as circunstâncias mudarem para se sentir diferente
+   - "Sinta agora como vai se sentir quando resolver isso" → o corpo não sabe
+     a diferença entre o que é real e o que é intensamente imaginado
+   - Aplicação: Exercícios de visualização na Escola da Consciência
+
+Aplicação por área jurídica:
+
+| Área | Técnica Dispenza |
+|------|-----------------|
+| **Ludopatia** | Quebra de padrão neural do vício. "O impulso é um circuito antigo. Você pode criar um novo." |
+| **BPC/Saúde** | Visualização de recuperação. Não se identificar com a doença. |
+| **Trabalhista** | Nova identidade: "Eu não sou meu emprego. Eu sou maior que essa situação." |
+| **Família** | Soltar o padrão de culpa/raiva. "Observar sem reagir automaticamente." |
+| **Internacional** | Criar nova realidade no exterior. "Onde estou agora é onde posso crescer." |
+
+### Napoleon Hill — Leis do Sucesso
+**DNA:** "Tudo o que a mente humana pode conceber e acreditar, ela pode alcançar."
+
+Princípios aplicados:
+
+1. **Desejo Ardente (Burning Desire)**
+   - O cliente precisa QUERER resolver, não apenas precisar
+   - Aplicação: Na reunião comercial, acender o desejo — "Imagine como vai ser quando isso estiver resolvido"
+
+2. **Fé (Faith)**
+   - Acreditar que é possível, mesmo antes de ver o resultado
+   - Aplicação: Prova social (8000+ vidas), depoimentos, autoridade da Dra. Nathalia
+
+3. **Autosugestão (Auto-Suggestion)**
+   - Repetir para si mesmo a nova crença até que se torne verdade
+   - Conexão direta com Dispenza (reprogramação neural) e Erickson (sugestões embutidas)
+   - Aplicação na Escola: Afirmações diárias personalizadas por área
+
+4. **Mastermind (Mente Mestra)**
+   - O poder do grupo: pessoas com objetivos similares se fortalecem
+   - Aplicação: Encontros semanais da Escola da Consciência
+   - Grupos por área: ludópatas juntos, imigrantes juntos, etc.
+
+5. **Decisão**
+   - "Pessoas bem-sucedidas decidem rápido e mudam de ideia devagar"
+   - Aplicação: Ajudar o cliente a decidir agir (sem pressão, com clareza)
+
+6. **Persistência**
+   - "O caminho entre o desejo e sua realização passa pela persistência"
+   - Aplicação: Follow-up que inspira, não que cobra. "Você já deu o primeiro passo"
+
+Aplicação na Escola da Consciência:
+
+```
+Semana do Mindset (integrada em todas as trilhas):
+
+DIA 1: Desejo — "O que você realmente quer que aconteça?"
+DIA 2: Fé — "Por que é possível? Quem já conseguiu?" (prova social)
+DIA 3: Visualização — "Feche os olhos. Sinta como vai ser." (Dispenza)
+DIA 4: Autosugestão — "Afirmação do dia: Eu estou no caminho certo"
+DIA 5: Ação — "Qual o menor passo que você pode dar hoje?" (micro-compromisso)
+DIA 6: Mastermind — Encontro do grupo
+DIA 7: Reflexão — "O que aprendi esta semana sobre mim?"
+```
+
 ## Protocolo Mentalidade Empreendedora (Flávio Augusto + Pablo Marçal + Marcos Strider)
 
 Esses três mentores dão a ENERGIA de execução, venda e influência que complementa
@@ -393,6 +484,8 @@ Agir sem atropelar a dor. Influenciar sem manipular.
 - Daniel Shapiro — Negotiating the Nonnegotiable
 - Gabor Maté — Quando o Corpo Diz Não
 - Elisama Santos — Conversas Corajosas
+- Joe Dispenza — Quebrando o Hábito de Ser Você Mesmo, Sobrenatural, Placebo é Você
+- Napoleon Hill — Quem Pensa Enriquece, A Lei do Triunfo, Mais Esperto que o Diabo
 - Flávio Augusto — Geração de Valor, Ponto de Inflexão
 - Pablo Marçal — O Poder da Ação Massiva, Desbloqueio
 - Marcos Strider — Hacking Comportamental, Os 7 Gatilhos da Persuasão
