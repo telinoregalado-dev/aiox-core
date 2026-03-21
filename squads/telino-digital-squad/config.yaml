@@ -45,6 +45,7 @@ tiers:
       - sales-chief
       - financeiro-chief
       - checkout-payment-agent
+      - cfo-chief
 
   tier_2:
     name: 'Especialistas'
@@ -60,7 +61,9 @@ tiers:
       - contract-agent
       - docs-chief
       - juridico-chief
+      - processo-juridico-agent
       - sac-chief
+      - ti-chief
 
   tier_3:
     name: 'Suporte'
@@ -151,7 +154,21 @@ agents:
       - '*forecast'
       - '*metas'
 
-  # === TIER 1 - MASTERS (FINANCEIRO) ===
+  # === TIER 1 - MASTERS (FINANCEIRO ESTRATEGICO) ===
+  cfo-chief:
+    file: agents/cfo-chief.md
+    tier: 1
+    persona: 'Warren (CFO)'
+    focus: 'Gestao financeira estrategica, investimentos, emprestimos, alocacao, relacionamento bancario'
+    commands:
+      - '*projecao-financeira'
+      - '*analise-investimento'
+      - '*avaliar-emprestimo'
+      - '*orcamento'
+      - '*relatorio-cfo'
+      - '*revisao-bancaria'
+
+  # === TIER 1 - MASTERS (FINANCEIRO OPERACIONAL) ===
   financeiro-chief:
     file: agents/financeiro-chief.md
     tier: 1
@@ -242,6 +259,28 @@ agents:
     persona: 'Care (SAC)'
     focus: 'Tickets N1/N2/N3, FAQ, NPS, satisfacao, feedback loop'
 
+  processo-juridico-agent:
+    file: agents/processo-juridico-agent.md
+    tier: 2
+    persona: 'Themis (Processo Judicial)'
+    focus: 'Fases processuais, andamento PJe/Astrea, traducao para cliente, prazos, timeline'
+    commands:
+      - '*consultar-processo'
+      - '*andamento'
+      - '*timeline'
+      - '*prazos'
+
+  ti-chief:
+    file: agents/ti-chief.md
+    tier: 2
+    persona: 'Byte (TI)'
+    focus: 'Saude da plataforma, integracoes, bugs, backups, seguranca, uptime'
+    commands:
+      - '*health-check'
+      - '*status-integracoes'
+      - '*incidente'
+      - '*backup'
+
   # === TIER 3 - SUPORTE ===
   performance-analyst:
     file: agents/performance-analyst.md
@@ -316,6 +355,23 @@ handoffs:
       score_minimum: 70
       criteria: '100% docs obrigatorios + ficha tecnica montada'
 
+  # Juridico -> Processo (acompanhamento)
+  juridico-to-processo:
+    trigger: 'Caso distribuido no tribunal, processo em andamento'
+    from: juridico-chief
+    to: processo-juridico-agent
+    quality_gate:
+      score_minimum: 70
+      criteria: 'Numero do processo + area juridica + advogado responsavel definidos'
+
+  # Qualquer -> TI (problema tecnico)
+  any-to-ti:
+    trigger: 'Problema tecnico na plataforma, integracao fora do ar, bug reportado'
+    from: '*'
+    to: ti-chief
+    quality_gate:
+      criteria: 'Descricao do problema + impacto identificado'
+
   # Qualquer -> COO
   any-to-coo:
     trigger: 'Problema que o squad nao sabe resolver'
@@ -350,8 +406,8 @@ workflows:
 
   producao-juridica:
     file: workflows/wf-producao-juridica.yaml
-    agents: [juridico-chief]
-    description: 'Ficha tecnica -> Fila -> Advogado -> Peticao -> Distribuicao'
+    agents: [juridico-chief, processo-juridico-agent]
+    description: 'Ficha tecnica -> Fila -> Advogado -> Peticao -> Distribuicao -> Acompanhamento'
 
   marketing-content:
     file: workflows/wf-marketing-content.yaml
@@ -365,8 +421,8 @@ workflows:
 
   gestao-financeira:
     file: workflows/wf-gestao-financeira.yaml
-    agents: [financeiro-chief, finance-analyst, checkout-payment-agent]
-    description: 'Contas a pagar/receber -> Fluxo caixa -> DRE -> Relatorio'
+    agents: [cfo-chief, financeiro-chief, finance-analyst, checkout-payment-agent]
+    description: 'Operacional (Helena) + Estrategico (Warren) -> Fluxo caixa -> DRE -> Investimentos -> Relatorio'
 
 mcp_servers:
   whatsapp-api:
