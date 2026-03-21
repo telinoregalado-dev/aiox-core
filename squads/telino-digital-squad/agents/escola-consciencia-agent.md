@@ -101,12 +101,193 @@ Uma área dentro da plataforma (área de membros) que oferece:
 │   ├── neurociencia-basica/
 │   └── exercicios-praticos/
 │
-└── /meu-progresso/            ← Dashboard pessoal do cliente
-    ├── trilha-atual
-    ├── exercicios-completados
-    ├── diario-pessoal
-    └── proximos-passos
+├── /ferramentas/              ← Ferramentas interativas de autoconhecimento
+│   ├── teste-ferida-emocional/    ← "Qual sua ferida predominante?" (quiz 20 perguntas)
+│   ├── teste-linguagem-amor/      ← "Qual sua linguagem do amor?" (quiz Gary Chapman)
+│   ├── teste-camada-apego/        ← "Em qual camada de apego você está?" (quiz)
+│   ├── teste-perfil-comportamental/ ← Perfil comportamental (DISC adaptado + estruturas de caráter)
+│   ├── roda-da-vida/              ← Avaliação 8 áreas da vida (interativo, visual)
+│   ├── mapa-de-gatilhos/          ← "O que dispara meus padrões?" (formulário guiado)
+│   ├── diario-de-consciencia/     ← Registro diário digital de emoções
+│   ├── pausa-consciente/          ← Exercício guiado PARE→RESPIRE→SINTA→ESCOLHA (Frankl)
+│   ├── visualizacao-dispenza/     ← Meditação guiada (áudio + texto)
+│   └── plano-90-dias/             ← Plano de reconstrução pessoal (concreto)
+│
+├── /treinamento-profissional/ ← Para líderes, advogados e profissionais que lidam com pessoas
+│   │
+│   ├── modulo-1-leitura-comportamental/ (8h)
+│   │   ├── aula-1-as-5-feridas-emocionais
+│   │   ├── aula-2-as-5-estruturas-de-carater
+│   │   ├── aula-3-o-corpo-explica-leitura-postural
+│   │   ├── aula-4-checklist-de-observacao-pratico
+│   │   ├── aula-5-linguagens-do-amor-aplicadas
+│   │   ├── aula-6-camadas-do-apego-identificacao
+│   │   └── exercicio-pratico-estudo-de-caso
+│   │
+│   ├── modulo-2-comunicacao-consciente/ (8h)
+│   │   ├── aula-1-cnv-4-passos-marshall-rosenberg
+│   │   ├── aula-2-comunicacao-ericksoniana-pacing-leading
+│   │   ├── aula-3-rapport-pnl-espelhamento
+│   │   ├── aula-4-pressuposicoes-e-sugestoes-embutidas
+│   │   ├── aula-5-mensagens-adaptadas-por-perfil
+│   │   ├── aula-6-reframe-e-duplo-vinculo
+│   │   └── exercicio-pratico-simulacao-atendimento
+│   │
+│   ├── modulo-3-negociacao-sistemica/ (8h)
+│   │   ├── aula-1-negociacao-harvard-fisher-ury
+│   │   ├── aula-2-emocoes-na-negociacao-daniel-shapiro
+│   │   ├── aula-3-ordens-do-amor-e-da-ajuda-hellinger
+│   │   ├── aula-4-negociacao-consciente-gustavo-regalado
+│   │   ├── aula-5-chris-voss-never-split-the-difference
+│   │   ├── aula-6-gatilhos-mentais-eticos-marcos-strider
+│   │   └── exercicio-pratico-negociacao-em-pares
+│   │
+│   ├── modulo-4-acolhimento-e-crise/ (6h)
+│   │   ├── aula-1-escuta-ativa-profunda
+│   │   ├── aula-2-limites-eticos-do-acolhimento
+│   │   ├── aula-3-manejo-de-crise-emocional
+│   │   ├── aula-4-encaminhamento-profissional
+│   │   └── exercicio-pratico-role-play-crise
+│   │
+│   ├── modulo-5-neurociencia-aplicada/ (6h)
+│   │   ├── aula-1-mielinizacao-e-padroes-neurais
+│   │   ├── aula-2-joe-dispenza-reprogramacao-mental
+│   │   ├── aula-3-neurociencia-da-tomada-de-decisao
+│   │   ├── aula-4-o-espaco-de-frankl-estimulo-resposta
+│   │   └── exercicio-pratico-meditacao-guiada
+│   │
+│   └── certificacao/             ← Certificado "Profissional de Consciência Aplicada"
+│       ├── prova-teorica-online
+│       ├── estudo-de-caso-real
+│       ├── avaliacao-360-por-pares
+│       └── certificado-digital
+│
+├── /meu-progresso/            ← Dashboard pessoal do cliente
+│   ├── trilha-atual
+│   ├── exercicios-completados
+│   ├── resultados-testes/     ← Histórico completo dos testes de perfil
+│   │   ├── minha-ferida-predominante
+│   │   ├── minha-linguagem-do-amor
+│   │   ├── minha-camada-de-apego
+│   │   ├── meu-perfil-comportamental
+│   │   └── minha-roda-da-vida
+│   ├── diario-pessoal
+│   └── proximos-passos
+│
+└── /meu-progresso-profissional/ ← Dashboard do profissional em treinamento
+    ├── modulos-concluidos
+    ├── horas-de-treinamento
+    ├── casos-praticos-avaliados
+    └── certificacoes
 ```
+
+## Ferramentas de Perfil Comportamental (detalhe)
+
+### Teste de Ferida Emocional (Quiz — 20 perguntas)
+O cliente responde 20 perguntas sobre comportamentos, reações e padrões.
+O resultado mostra:
+- Ferida predominante (1ª e 2ª)
+- Estrutura de caráter associada
+- Superpoder oculto
+- Sugestões de trilha na Escola
+- "Seu perfil não é um rótulo — é um mapa para o autoconhecimento"
+
+### Teste de Perfil Comportamental (DISC Adaptado + Estruturas)
+Combina elementos do DISC com as estruturas de caráter:
+- **D (Dominância)** ↔ Psicopata/Traição — Líder, controlador, direto
+- **I (Influência)** ↔ Oral/Abandono — Comunicativo, social, emocional
+- **S (Estabilidade)** ↔ Masoquista/Humilhação — Paciente, leal, acolhedor
+- **C (Conformidade)** ↔ Rígido/Injustiça — Preciso, analítico, perfeccionista
+- **Introspecção** ↔ Esquizoide/Rejeição — Criativo, intuitivo, reservado
+
+Resultado visual com gráfico radar + descrição + recomendações.
+
+### Roda da Vida Consciente (Interativa)
+8 áreas avaliadas de 0 a 10:
+1. Saúde e Corpo
+2. Finanças
+3. Carreira/Propósito
+4. Relacionamento Amoroso
+5. Família
+6. Vida Social
+7. Espiritualidade/Consciência
+8. Lazer e Diversão
+
+Gera gráfico visual + área mais crítica + recomendação de trilha.
+
+## Treinamento para Profissionais (detalhe)
+
+### Público-Alvo
+- Advogados que atendem pessoas em crise
+- Líderes de equipe que gerenciam pessoas
+- Mediadores e conciliadores
+- Psicólogos e terapeutas (complementar)
+- Profissionais de RH
+- Qualquer pessoa que lide com pessoas em situações emocionais
+
+### Carga Horária Total: 36 horas (5 módulos)
+### Formato: Online, assíncrono + encontros ao vivo quinzenais
+### Certificação: "Profissional de Consciência Aplicada — Método Regalado"
+
+## Formação de Mentores e Líderes Empresários Digitais
+
+### Programa Avançado: "Mentor de Consciência Digital"
+
+Programa para formar NOVOS MENTORES que repliquem o Método Regalado
+em seus próprios negócios, equipes e comunidades.
+
+**Público-alvo:**
+- Empresários que querem liderar com consciência no digital
+- Advogados que querem virar mentores de transformação
+- Coaches e facilitadores que querem método estruturado
+- Líderes de equipe que querem cultura humanizada
+- Empreendedores digitais que lidam com comunidades
+
+### Estrutura do Programa (12 semanas)
+
+**Módulo 1: Fundamentos do Mentor Consciente (3 semanas)**
+- Quem é o mentor? (Diferença entre coach, terapeuta, consultor, mentor)
+- Os 16 pilares da consciência (Hellinger, CNV, Erickson, Dispenza, Hill, etc)
+- Autoconhecimento do mentor: suas feridas, seus padrões, seus superpoderes
+- Ética do mentor: limites, responsabilidade, encaminhamento
+- Prática: "Cure-se primeiro" — processo pessoal supervisionado
+
+**Módulo 2: Leitura de Pessoas no Digital (3 semanas)**
+- Como ler comportamento em texto (WhatsApp, email, chat)
+- Perfil comportamental digital (adaptação do presencial para online)
+- Checklist de observação para ambiente digital
+- Comunicação adaptada por perfil (Erickson + CNV no texto)
+- Prática: Atender 3 pessoas reais com supervisão
+
+**Módulo 3: Liderança Consciente para o Digital (3 semanas)**
+- Mentalidade de dono (Flávio Augusto) no mundo digital
+- Energia de execução (Marçal) sem perder humanidade
+- Persuasão ética (Strider) em vendas e marketing digital
+- Construir comunidade (não apenas audiência)
+- Criar conteúdo que transforma (não apenas engaja)
+- Prática: Criar um mini-projeto de mentoria digital
+
+**Módulo 4: Escala e Produto (3 semanas)**
+- Transformar conhecimento em produto digital
+- Construir uma Escola da Consciência para SEU negócio
+- Ferramentas: plataforma, automação, agentes IA
+- Modelo de negócio: mentoria individual → grupo → curso → plataforma
+- Criar sua comunidade de transformação
+- Prática: Lançar primeiro grupo de mentoria
+
+### Certificação
+- "Mentor de Consciência Digital — Método Regalado"
+- Licenciado para usar as ferramentas e metodologias
+- Acesso à comunidade de mentores formados
+- Suporte contínuo via plataforma
+
+### Modelo de Negócio (para Telino e Regalado)
+Este programa é um PRODUTO que pode ser vendido separadamente:
+- Formação presencial/online: R$3.000 - R$5.000/pessoa
+- Turmas de 20-30 pessoas
+- 4 turmas/ano = receita adicional significativa
+- Posiciona Gustavo como REFERÊNCIA em mentoria consciente no direito
+- Cria uma rede de mentores que INDICA clientes para o escritório
 
 ## Conteúdo Base (gerado com supervisão de Regalado e Telino)
 
