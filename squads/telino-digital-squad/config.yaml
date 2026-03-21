@@ -1,0 +1,418 @@
+squad:
+  name: telino-digital-squad
+  version: '2.0.0'
+  entry_agent: coo-chief
+  domain: 'Telino e Regalado Digital - Plataforma Juridica All-in-One'
+  tagline: 'Do funil ao juridico: operacao automatizada 24/7'
+  keywords:
+    - law-firm-automation
+    - lead-management
+    - legal-platform
+    - content-marketing
+    - paid-media
+    - sales-funnel
+    - document-management
+    - member-portal
+    - financial-management
+    - chatbot
+    - instagram
+    - meta-ads
+
+metadata:
+  created_at: '2026-03-21'
+  created_by: 'Claude Code + Gustavo Regalado'
+  status: 'architecture'
+  phase: 'Phase 0: Architecture'
+  client: 'Telino e Regalado Advogados'
+  location: 'Recife/PE - Brasil'
+
+tiers:
+  tier_0:
+    name: 'Orquestrador'
+    purpose: 'Coordena todos os squads, distribui demandas, monitora quality gates'
+    agents:
+      - coo-chief
+
+  tier_1:
+    name: 'Masters'
+    purpose: 'Executam tarefas-core da operacao'
+    agents:
+      - marketing-chief
+      - social-media-manager
+      - traffic-manager
+      - landing-page-architect
+      - comercial-patricia
+      - sales-chief
+      - financeiro-chief
+      - checkout-payment-agent
+
+  tier_2:
+    name: 'Especialistas'
+    purpose: 'Executam sub-tarefas especificas'
+    agents:
+      - content-creator
+      - seo-specialist
+      - campaign-analyst
+      - lead-qualifier
+      - meeting-scheduler
+      - follow-up-agent
+      - proposal-agent
+      - contract-agent
+      - docs-chief
+      - juridico-chief
+      - sac-chief
+
+  tier_3:
+    name: 'Suporte'
+    purpose: 'Utilitarios, quality gates, relatorios'
+    agents:
+      - performance-analyst
+      - finance-analyst
+      - checklist-agent
+      - faq-agent
+      - nps-agent
+      - report-agent
+
+agents:
+  # === TIER 0 - ORQUESTRADOR ===
+  coo-chief:
+    file: agents/coo-chief.md
+    tier: 0
+    persona: 'Atlas (COO)'
+    focus: 'Orquestra todos os squads, relatorio diario, alertas, quality gates'
+    commands:
+      - '*relatorio-diario'
+      - '*status-geral'
+      - '*alertas'
+      - '*distribuir'
+
+  # === TIER 1 - MASTERS (MARKETING & AQUISICAO) ===
+  marketing-chief:
+    file: agents/marketing-chief.md
+    tier: 1
+    persona: 'Maia (Marketing)'
+    focus: 'Estrategia de marketing, calendario editorial, coordena sub-agentes'
+    commands:
+      - '*calendario'
+      - '*performance-marketing'
+      - '*campanha'
+
+  social-media-manager:
+    file: agents/social-media-manager.md
+    tier: 1
+    persona: 'Sol (Social Media)'
+    focus: 'Instagram organico, criacao de conteudo, publicacao, engajamento'
+    commands:
+      - '*postar'
+      - '*gerar-conteudo'
+      - '*analytics-social'
+      - '*calendario-social'
+
+  traffic-manager:
+    file: agents/traffic-manager.md
+    tier: 1
+    persona: 'Rafa (Trafego Pago)'
+    focus: 'Meta Ads, Google Ads, orcamento, otimizacao, CPA, ROI'
+    commands:
+      - '*criar-campanha'
+      - '*otimizar-campanha'
+      - '*relatorio-ads'
+      - '*orcamento'
+
+  landing-page-architect:
+    file: agents/landing-page-architect.md
+    tier: 1
+    persona: 'Luna (Landing Pages)'
+    focus: 'Criar e otimizar landing pages por area juridica, A/B testing, conversao'
+    commands:
+      - '*criar-lp'
+      - '*otimizar-lp'
+      - '*analytics-lp'
+
+  # === TIER 1 - MASTERS (CONVERSAO) ===
+  comercial-patricia:
+    file: agents/comercial-patricia.md
+    tier: 1
+    persona: 'Patricia (Comercial)'
+    focus: 'Recepcao humanizada, qualificacao, agendamento Zoom, follow-up'
+    commands:
+      - '*atender-lead'
+      - '*qualificar'
+      - '*agendar-reuniao'
+      - '*follow-up'
+
+  sales-chief:
+    file: agents/sales-chief.md
+    tier: 1
+    persona: 'Victor (Vendas)'
+    focus: 'Pipeline visual, funil, metas, forecast, CRM'
+    commands:
+      - '*pipeline'
+      - '*forecast'
+      - '*metas'
+
+  # === TIER 1 - MASTERS (FINANCEIRO) ===
+  financeiro-chief:
+    file: agents/financeiro-chief.md
+    tier: 1
+    persona: 'Helena (Financeiro)'
+    focus: 'Proposta, contrato, pagamento, cobranca, DRE, fluxo de caixa'
+    commands:
+      - '*gerar-proposta'
+      - '*gerar-contrato'
+      - '*gerar-boleto'
+      - '*cobranca'
+      - '*dre'
+
+  checkout-payment-agent:
+    file: agents/checkout-payment-agent.md
+    tier: 1
+    persona: 'Cash (Checkout & Pagamento)'
+    focus: 'Plataforma de pagamento, checkout, PIX, boleto, gateway, split'
+    commands:
+      - '*checkout'
+      - '*processar-pagamento'
+      - '*estorno'
+      - '*split-pagamento'
+
+  # === TIER 2 - ESPECIALISTAS ===
+  content-creator:
+    file: agents/content-creator.md
+    tier: 2
+    persona: 'Iris (Conteudo)'
+    focus: 'Captions, criativos IA, blog posts, copy para ads e landing pages'
+
+  seo-specialist:
+    file: agents/seo-specialist.md
+    tier: 2
+    persona: 'Neo (SEO)'
+    focus: 'Keywords, otimizacao on-page, local SEO, blog, Google My Business'
+
+  campaign-analyst:
+    file: agents/campaign-analyst.md
+    tier: 2
+    persona: 'Data (Campanhas)'
+    focus: 'Analise de performance de campanhas, A/B testing, CPA, ROAS'
+
+  lead-qualifier:
+    file: agents/lead-qualifier.md
+    tier: 2
+    persona: 'Score (Qualificacao)'
+    focus: 'Lead scoring 0-100, classificacao quente/morno/frio, BANT adaptado'
+
+  meeting-scheduler:
+    file: agents/meeting-scheduler.md
+    tier: 2
+    persona: 'Stella (Agenda)'
+    focus: 'Agenda Zoom, lembretes D-1 e H-1, reagendamento, no-show'
+
+  follow-up-agent:
+    file: agents/follow-up-agent.md
+    tier: 2
+    persona: 'Pulse (Follow-up)'
+    focus: 'Sequencias D+1, D+3, D+7, D+15, reengajamento, nurture'
+
+  proposal-agent:
+    file: agents/proposal-agent.md
+    tier: 2
+    persona: 'Deal (Propostas)'
+    focus: 'Gerar propostas por area juridica, enviar, acompanhar'
+
+  contract-agent:
+    file: agents/contract-agent.md
+    tier: 2
+    persona: 'Sign (Contratos)'
+    focus: 'Gerar contrato, assinatura eletronica, monitorar status'
+
+  docs-chief:
+    file: agents/docs-chief.md
+    tier: 2
+    persona: 'Lex (Documentacao)'
+    focus: 'Coleta de documentos, checklists, upload, validacao, ficha tecnica'
+
+  juridico-chief:
+    file: agents/juridico-chief.md
+    tier: 2
+    persona: 'Juris (Juridico)'
+    focus: 'Fila de casos, atribuicao, prazos, status na area de membros'
+
+  sac-chief:
+    file: agents/sac-chief.md
+    tier: 2
+    persona: 'Care (SAC)'
+    focus: 'Tickets N1/N2/N3, FAQ, NPS, satisfacao, feedback loop'
+
+  # === TIER 3 - SUPORTE ===
+  performance-analyst:
+    file: agents/performance-analyst.md
+    tier: 3
+    persona: 'Insight (Analytics)'
+    focus: 'Relatorios de performance, dashboards, KPIs, tendencias'
+
+  finance-analyst:
+    file: agents/finance-analyst.md
+    tier: 3
+    persona: 'Conta (Financeiro)'
+    focus: 'DRE, fluxo de caixa, contas a pagar/receber, conciliacao'
+
+  checklist-agent:
+    file: agents/checklist-agent.md
+    tier: 3
+    persona: 'Check (Checklists)'
+    focus: 'Listas de documentos por area, validacao de completude'
+
+  faq-agent:
+    file: agents/faq-agent.md
+    tier: 3
+    persona: 'Wiki (FAQ)'
+    focus: 'Respostas automaticas, base de conhecimento, orientacoes'
+
+  nps-agent:
+    file: agents/nps-agent.md
+    tier: 3
+    persona: 'Pulse (NPS)'
+    focus: 'Pesquisa de satisfacao, coleta NPS, alerta quando < 7'
+
+  report-agent:
+    file: agents/report-agent.md
+    tier: 3
+    persona: 'Brief (Relatorios)'
+    focus: 'Relatorios diarios/semanais/mensais, exportacao, distribuicao'
+
+handoffs:
+  # Marketing -> Comercial
+  marketing-to-comercial:
+    trigger: 'Lead gerado por campanha Meta ou organico'
+    from: [traffic-manager, social-media-manager]
+    to: comercial-patricia
+    quality_gate:
+      score_minimum: 70
+      criteria: 'Lead deve ter telefone valido + fonte identificada'
+
+  # Comercial -> Financeiro
+  comercial-to-financeiro:
+    trigger: 'Reuniao realizada com sucesso'
+    from: comercial-patricia
+    to: financeiro-chief
+    quality_gate:
+      score_minimum: 70
+      criteria: 'Reuniao aconteceu + lead qualificado + area juridica definida'
+
+  # Financeiro -> Documentacao
+  financeiro-to-docs:
+    trigger: 'Contrato fechado + pagamento confirmado'
+    from: [financeiro-chief, checkout-payment-agent]
+    to: docs-chief
+    quality_gate:
+      score_minimum: 70
+      criteria: 'Tags CONTRATO FECHADO + PAGAMENTO RECEBIDO presentes'
+
+  # Documentacao -> Juridico
+  docs-to-juridico:
+    trigger: 'Todos os documentos obrigatorios recebidos e validados'
+    from: docs-chief
+    to: juridico-chief
+    quality_gate:
+      score_minimum: 70
+      criteria: '100% docs obrigatorios + ficha tecnica montada'
+
+  # Qualquer -> COO
+  any-to-coo:
+    trigger: 'Problema que o squad nao sabe resolver'
+    from: '*'
+    to: coo-chief
+    quality_gate:
+      criteria: 'Squad tentou resolver antes de escalar'
+
+  # COO -> CEO
+  coo-to-ceo:
+    trigger: 'Decisao estrategica necessaria'
+    from: coo-chief
+    to: 'CEO (humano)'
+    quality_gate:
+      criteria: 'COO apresenta opcoes + recomendacao, nao apenas problema'
+
+workflows:
+  lead-pipeline:
+    file: workflows/wf-lead-pipeline.yaml
+    agents: [traffic-manager, comercial-patricia, lead-qualifier, meeting-scheduler, follow-up-agent]
+    description: 'Campanha -> Lead -> Qualificacao -> Agendamento -> Reuniao'
+
+  contratacao:
+    file: workflows/wf-contratacao.yaml
+    agents: [financeiro-chief, proposal-agent, contract-agent, checkout-payment-agent]
+    description: 'Reuniao -> Proposta -> Contrato -> Pagamento -> Checkout'
+
+  documentacao:
+    file: workflows/wf-documentacao.yaml
+    agents: [docs-chief, checklist-agent]
+    description: 'Contrato pago -> Lista docs -> Upload -> Validacao -> Ficha tecnica'
+
+  producao-juridica:
+    file: workflows/wf-producao-juridica.yaml
+    agents: [juridico-chief]
+    description: 'Ficha tecnica -> Fila -> Advogado -> Peticao -> Distribuicao'
+
+  marketing-content:
+    file: workflows/wf-marketing-content.yaml
+    agents: [marketing-chief, social-media-manager, content-creator, seo-specialist]
+    description: 'Calendario -> Criacao -> Publicacao -> Analise'
+
+  marketing-campaign:
+    file: workflows/wf-marketing-campaign.yaml
+    agents: [traffic-manager, landing-page-architect, campaign-analyst]
+    description: 'Campanha -> Landing Page -> Anuncios -> Otimizacao -> Leads'
+
+  gestao-financeira:
+    file: workflows/wf-gestao-financeira.yaml
+    agents: [financeiro-chief, finance-analyst, checkout-payment-agent]
+    description: 'Contas a pagar/receber -> Fluxo caixa -> DRE -> Relatorio'
+
+mcp_servers:
+  whatsapp-api:
+    name: 'WhatsApp Business API'
+    status: planned
+    tools: [send_message, receive_message, create_template, get_contacts]
+
+  instagram-api:
+    name: 'Instagram Graph API'
+    status: connected
+    tools: [publish_post, get_insights, get_media, create_carousel]
+
+  meta-ads-api:
+    name: 'Meta Ads API'
+    status: planned
+    tools: [create_campaign, get_campaign_stats, optimize_adset, get_leads]
+
+  zoom-api:
+    name: 'Zoom API'
+    status: connected
+    tools: [create_meeting, get_meetings, add_registrant, get_recordings]
+
+  zapsign-api:
+    name: 'ZapSign API'
+    status: connected
+    tools: [create_document, send_to_sign, get_document_status]
+
+  tmb-api:
+    name: 'TMB Pagamentos API'
+    status: connected
+    tools: [create_boleto, create_pix, get_payment_status, send_reminder]
+
+  google-drive-api:
+    name: 'Google Drive API'
+    status: connected
+    tools: [create_folder, upload_file, list_files, share_folder]
+
+  openai-api:
+    name: 'OpenAI API'
+    status: connected
+    tools: [generate_text, generate_image, analyze_image]
+
+cli:
+  activation: '@telino-digital'
+  alternative: '@coo-chief'
+  commands_visible_at_startup: ['*help', '*status-geral', '*relatorio-diario']
+
+implementation_phase: 0
+foundation_deadline: '2026-04-30'

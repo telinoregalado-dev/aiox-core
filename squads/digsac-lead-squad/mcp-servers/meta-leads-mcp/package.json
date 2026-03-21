@@ -1,0 +1,31 @@
+{
+  "name": "digsac-meta-leads-mcp",
+  "version": "1.0.0",
+  "description": "DIGSAC MCP for Meta API — Lead intake from Instagram/Facebook campaigns",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mcp",
+    "meta",
+    "leads",
+    "instagram",
+    "facebook",
+    "digsac"
+  ],
+  "author": "DIGSAC Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.7.0"
+  },
+  "devDependencies": {
+    "node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

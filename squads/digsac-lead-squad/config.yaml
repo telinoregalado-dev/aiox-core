@@ -1,0 +1,249 @@
+squad:
+  name: digsac-lead-squad
+  version: '1.0.0'
+  entry_agent: lead-manager-chief
+  domain: 'DIGSAC Lead Management — Complete Lead Lifecycle Automation'
+  tagline: 'From Meta Leads to Qualified Meetings in Zoom'
+  keywords:
+    - lead-management
+    - meta-integration
+    - zoom-scheduling
+    - email-automation
+    - sales-automation
+    - digsac
+
+metadata:
+  created_at: '2026-03-17'
+  created_by: 'Claude Code'
+  status: 'foundation'
+  phase: 'Phase 1: Foundation'
+
+tiers:
+  tier_0:
+    name: 'Orchestration & Triage'
+    purpose: 'Lead intake, validation, and routing'
+    agents:
+      - lead-manager-chief
+    description: |
+      Tier 0 orchestrator receives webhooks from Meta, performs initial triage,
+      and routes leads to specialized Tier 1 agents for processing.
+
+  tier_1:
+    name: 'Specialized Processing'
+    purpose: 'Lead consolidation, validation, scheduling, notification'
+    agents:
+      - lead-consolidator
+      - lead-validator
+      - meeting-scheduler
+      - lead-notifier
+    description: |
+      Tier 1 specialists execute specific tasks:
+      - Consolidator: Extracts and maps lead data from Meta payload
+      - Validator: Validates quality and detects duplicates
+      - Scheduler: Creates Zoom meetings and calendar entries
+      - Notifier: Sends confirmations and reminders to leads
+
+agents:
+  lead-manager-chief:
+    file: agents/lead-manager-chief.md
+    tier: 0
+    persona: Logan (Coordinator)
+    based_on: claude-mastery-chief.md
+    focus: |
+      Orchestrate complete lead processing workflow.
+      Receive Meta webhooks, perform triage, route to specialists.
+    commands:
+      - '*receive-lead'
+      - '*process-lead'
+      - '*check-lead-status'
+      - '*escalate-lead'
+
+  lead-consolidator:
+    file: agents/lead-consolidator.md
+    tier: 1
+    persona: Cedar (Data Extractor)
+    status: 'planned'
+    focus: |
+      Extract and normalize lead data from Meta payload.
+      Map to DIGSAC internal model.
+    tasks:
+      - tasks/consolidate-lead-data.md
+
+  lead-validator:
+    file: agents/lead-validator.md
+    tier: 1
+    persona: Vera (Quality Assurance)
+    status: 'planned'
+    focus: |
+      Validate lead quality, apply scoring rules, detect duplicates.
+      Determine if lead is qualified for meeting.
+    tasks:
+      - tasks/validate-lead-data.md
+      - tasks/qualify-lead.md
+
+  meeting-scheduler:
+    file: agents/meeting-scheduler.md
+    tier: 1
+    persona: Stella (Calendar Master)
+    status: 'planned'
+    focus: |
+      Create Zoom meetings, add registrants, update calendars.
+      Generate personalized meeting links.
+    tasks:
+      - tasks/create-zoom-meeting.md
+      - tasks/add-to-calendar.md
+      - tasks/generate-meeting-link.md
+
+  lead-notifier:
+    file: agents/lead-notifier.md
+    tier: 1
+    persona: Nova (Communications)
+    status: 'planned'
+    focus: |
+      Send confirmation emails, schedule reminders (1h before).
+      Capture lead confirmations, log interactions.
+    tasks:
+      - tasks/send-confirmation-email.md
+      - tasks/schedule-reminder-1h.md
+
+handoffs:
+  lead-manager-chief:
+    strategy: 'sequential-with-context'
+    routes_to:
+      - lead-consolidator
+      - lead-validator
+      - meeting-scheduler
+      - lead-notifier
+    coordinates_with:
+      - All Tier 1 agents
+    escalates_to:
+      - 'User manual escalation'
+
+  lead-consolidator:
+    outputs_to: lead-validator
+    escalates_to: lead-manager-chief
+
+  lead-validator:
+    outputs_to: meeting-scheduler
+    escalates_to: lead-manager-chief
+
+  meeting-scheduler:
+    outputs_to: lead-notifier
+    escalates_to: lead-manager-chief
+
+  lead-notifier:
+    outputs_to: lead-manager-chief
+    escalates_to: lead-manager-chief
+
+mcp_servers:
+  meta-leads-mcp:
+    name: 'DIGSAC Meta Leads MCP'
+    location: mcp-servers/meta-leads-mcp/
+    transport: stdio
+    requires_api_key: true
+    api_key_env: META_ACCESS_TOKEN
+    status: phase-1-stub
+    tools:
+      - receive_lead_webhook
+      - get_lead_details
+      - mark_lead_processed
+
+  zoom-scheduler-mcp:
+    name: 'DIGSAC Zoom Scheduler MCP'
+    location: mcp-servers/zoom-scheduler-mcp/
+    transport: stdio
+    requires_api_key: true
+    api_key_env: ZOOM_API_KEY
+    status: phase-1-stub
+    tools:
+      - create_meeting
+      - get_meeting_link
+      - add_registrant
+      - update_meeting
+
+  digsac-api-mcp:
+    name: 'DIGSAC API MCP'
+    location: mcp-servers/digsac-api-mcp/
+    transport: stdio
+    requires_api_key: true
+    api_key_env: DIGSAC_API_KEY
+    status: phase-1-stub
+    tools:
+      - create_lead_record
+      - update_lead_status
+      - log_interaction
+      - get_lead_info
+
+workflows:
+  lead-intake:
+    file: workflows/wf-lead-intake.yaml
+    phase: 1
+    purpose: 'Receive and validate lead from Meta webhook'
+    agents:
+      - lead-manager-chief
+      - lead-consolidator
+
+  lead-processing:
+    file: workflows/wf-lead-processing.yaml
+    phase: 2
+    purpose: 'Validate and qualify lead'
+    agents:
+      - lead-validator
+
+  meeting-orchestration:
+    file: workflows/wf-meeting-orchestration.yaml
+    phase: 3
+    purpose: 'Create Zoom meeting and send confirmations'
+    agents:
+      - meeting-scheduler
+      - lead-notifier
+
+  lead-completion:
+    file: workflows/wf-lead-completion.yaml
+    phase: 4
+    purpose: 'Save to DIGSAC and log interactions'
+    agents:
+      - lead-manager-chief
+
+cross_cutting:
+  data-normalization:
+    context_files:
+      - data/lead-source-mapping.yaml
+    owned_by: lead-consolidator
+
+  lead-qualification:
+    context_files:
+      - data/lead-qualification-rules.yaml
+    owned_by: lead-validator
+
+  meeting-scheduling:
+    context_files:
+      - data/meeting-duration-matrix.yaml
+    owned_by: meeting-scheduler
+
+  notifications:
+    context_files:
+      - data/notification-templates.yaml
+    owned_by: lead-notifier
+
+templates:
+  lead_record:
+    count: 3
+    location: templates/lead-record-*.md
+    usage: 'Output template for consolidated lead record'
+
+  meeting_invitation:
+    location: templates/meeting-invitation-*.md
+    usage: 'Email template for meeting confirmation'
+
+  reminder_message:
+    location: templates/reminder-message-*.md
+    usage: 'SMS/Email template for 1h reminders'
+
+cli:
+  activation: '@digsac-lead-squad'
+  alternative: '@lead-manager-chief'
+  commands_visible_at_startup: ['*help', '*receive-lead', '*check-lead-status']
+
+implementation_phase: 1
+foundation_deadline: '2026-03-24'

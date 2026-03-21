@@ -59,6 +59,8 @@ squads/*
 !squads/_example/
 # Published squads (whitelisted for repository)
 !squads/claude-code-mastery/
+!squads/digsac-lead-squad/
+!squads/telino-digital-squad/
 keys/
 *.secret
 *.credentials
@@ -157,6 +159,9 @@ supabase/
 
 # Output directories (generated artifacts)
 outputs/
+
+# Zoom recording downloads (contains user data)
+downloads/
 
 # Test fixtures (generated during tests)
 tests/*/__fixtures__/

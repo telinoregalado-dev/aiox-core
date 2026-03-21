@@ -1,0 +1,31 @@
+{
+  "name": "digsac-zoom-scheduler-mcp",
+  "version": "1.0.0",
+  "description": "DIGSAC MCP for Zoom API — Meeting scheduling and calendar management",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mcp",
+    "zoom",
+    "meetings",
+    "calendar",
+    "scheduling",
+    "digsac"
+  ],
+  "author": "DIGSAC Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.7.0"
+  },
+  "devDependencies": {
+    "node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
