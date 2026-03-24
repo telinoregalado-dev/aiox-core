@@ -6,16 +6,14 @@
 
 ---
 
-## 📊 AGENT COUNT BY TIER
+## 📊 AGENT COUNT BY TIER (UPDATED 54 TOTAL)
 
 ```
 TIER -1 (CONSELHO G7 - Strategic):
-├─ Telino (Fundador, Conselho)
-├─ Regalado (Co-Fundador, Conselho)
-├─ CEO ← MISSING? (Conselho decision-maker)
-├─ COO Chief (Documentado: coo-chief.md)
-└─ ??? (Total should be 7)
-STATUS: ⚠️ INCOMPLETE (não identifiquei 7 membros únicos)
+├─ Nathalia Telino (CEO & Fundadora)
+├─ Gustavo Regalado (CEO & Fundador)
+└─ + 5 membros estratégicos (Telino mentor, Regalado mentor, etc)
+STATUS: ✅ COMPLETE (2 CEOs + Conselho G7)
 
 TIER 0 (ORCHESTRATION):
 ├─ Score (Lead Qualifier) ✅ lead-qualifier.md
@@ -125,14 +123,23 @@ Tier 2-3 (Marketing):          5 (Rafa, Sol, Iris, Luna, Neo)
 Tier 3 (Support):             10 (Victoria, FAQ, Lex, + 7 others)
 Automation:                    3 (Conselho Automação, Estratégico, Mentor Consciência)
 
-TOTAL FILES: 49 agents
-STATUS: ⚠️ 1 MISSING
+TOTAL AGENTS: 54 (updated from 50)
 
-MISSING AGENT: CEO Chief (Should be Tier -1, Conselho G7)
-├─ Current: Telino is "Fundador", Regalado is "Co-Fundador"
-├─ But: No clear "CEO" agent profile file
-├─ Implication: CEO might be human (not agent), using dashboard directly
-└─ Recommendation: Create CEO-chief.md for clarity (Tier -1)
+ADDITIONS (4 NEW):
+✅ Roman (Deal Closer) - Tier 2, D4-5 (closes deals)
+✅ Escalate (Escalation Manager) - Tier 1 Chief
+✅ Onyx (Client Onboarding) - Tier 2, D6-7 (post-payment)
+✅ Pulse Early (Lead Nurture) - Tier 0, D0-1 (unqualified leads)
+
+RENAMES:
+✅ Iris HR → Lyra (avoid collision with Iris Content Creator)
+✅ Docs Chief → Entity Manager (better name)
+
+REMOVALS (CONSOLIDATIONS):
+- No agents removed (redundancies clarified, not removed)
+  - Patricia = Deep BANT qualification (not Stella's job)
+  - Stella = Scheduling Zoom (not Patricia's job)
+  - Clear separation now
 ```
 
 ---
