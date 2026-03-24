@@ -246,8 +246,8 @@ Churn esperado: 5.2% (ligeiro aumento)
 
 **Com Hormozi:** Análise qual oferta converte melhor (A vs B)
 **Com Marcus:** Análise qual mensagem funciona (segmentação por psicografia)
-**Com Helena:** Entender dinâmica sistêmica nos padrões de churn
-**Com Iris:** Correlação entre padrão neurológico e taxa de conversão
+**Com Sophia:** Entender dinâmica sistêmica nos padrões de churn
+**Com Neura:** Correlação entre padrão neurológico e taxa de conversão
 **Com Augusto (Conselho):** Dados para definir meta de crescimento
 **Com Lemann (Conselho):** KPIs operacionais, eficiência, gargalos
 **Com Comercial/Patricia:** Análise de lead quality, priorização
