@@ -89,14 +89,14 @@ welcome:
 ---
 
 ## Shield (Crisis Manager)
-**Trigger:** Cliente em crise detectado por Score/Mirror/SAC
+**Trigger:** Cliente em crise detectado por SAC/Mirror/Processo-Juridico
 ```yaml
 shield:
   event:
-    - 'cliente_em_crise' (detectado por Score ou Mirror)
-    - 'ameaca_suicida' (immediate escalation)
-    - 'sentenca_adversa' (decision emocional)
-    - 'cliente_irritado_extremo' (SAC score >8)
+    - 'cliente_em_crise' (detectado por SAC-Chief ou Mirror)
+    - 'ameaca_suicida' (immediate escalation — qualquer agente)
+    - 'sentenca_adversa' (Processo-Juridico detecta decisão negativa)
+    - 'cliente_irritado_extremo' (SAC score raiva >8)
   action:
     hour_1:
       - detecta_urgencia
@@ -311,6 +311,339 @@ echo:
 
 ---
 
+## Stella (Meeting Scheduler)
+**Trigger:** Patricia qualifica lead com score >60 OU reagendamento
+```yaml
+stella:
+  event:
+    - 'lead_qualificado_score_60' (Patricia confirma)
+    - 'reagendamento_solicitado' (cliente pediu)
+    - 'no_show_detectado' (reunião sem presença)
+  action:
+    - verifica_disponibilidade_calendario
+    - cria_reuniao_zoom (individual 60min / grupo 120min)
+    - envia_link_whatsapp + instrucoes
+    - agenda_lembrete_d_minus_1
+    - agenda_lembrete_h_minus_1
+  no_show:
+    - detecta_ausencia (15min apos horario)
+    - notifica_patricia (tentar reagendamento)
+    - se_nao_reagenda_em_48h: passa_para_pulse
+  timeout: 2h (para agendamento)
+  on_error: escalate_to_patricia
+```
+
+---
+
+## Deal (Proposal Agent)
+**Trigger:** Reunião realizada com sucesso
+```yaml
+deal:
+  event:
+    - 'reuniao_realizada' (Meeting-Scheduler confirma presença)
+    - 'solicitacao_proposta' (Patricia ou Sales-Chief pede)
+  precondition: 'area_juridica + valor_estimado + dados_cliente'
+  action:
+    - gera_proposta_por_area_juridica
+    - calcula_valor (tabela + complexidade)
+    - envia_proposta_whatsapp + email
+    - agenda_follow_up_48h
+  proposta_aceita:
+    - envia_para_sign (Contract-Agent)
+  proposta_rejeitada:
+    - notifica_marcus (negociacao estratégica)
+    - se_objecao_preco: marcus_reframe
+    - se_desistiu: passa_para_pulse (nurture longo)
+  timeout: 7_dias → lembrete_proposta → 14_dias → passa_para_pulse
+  on_error: escalate_to_sales_chief
+```
+
+---
+
+## Sign (Contract Agent)
+**Trigger:** Proposta aceita pelo cliente
+```yaml
+sign:
+  event:
+    - 'proposta_aceita' (Deal confirma)
+    - 'contrato_revisado' (Juridico valida alteração)
+  precondition: 'proposta_aceita + dados_completos_cliente'
+  action:
+    - gera_contrato_template (por area juridica)
+    - preenche_dados_cliente
+    - envia_para_assinatura_eletronica (DocuSign/ZapSign)
+    - monitora_status_assinatura
+  contrato_assinado:
+    - notifica_cash (processamento de pagamento)
+    - notifica_financeiro_chief
+  contrato_nao_assinado:
+    - lembrete_d_plus_1
+    - lembrete_d_plus_3
+    - se_nao_assinou_d7: notifica_patricia + marcus
+  timeout: 7_dias
+  on_error: escalate_to_financeiro_chief
+```
+
+---
+
+## Cash (Checkout & Payment)
+**Trigger:** Contrato assinado, aguardando pagamento
+```yaml
+cash:
+  event:
+    - 'contrato_assinado' (Sign confirma)
+    - 'pagamento_recorrente' (vencimento mensal)
+    - 'cobranca_atrasada' (financeiro sinaliza)
+  action:
+    - gera_link_pagamento (PIX, boleto, cartão)
+    - envia_link_whatsapp + email
+    - monitora_status_pagamento
+  pagamento_confirmado:
+    - notifica_welcome (inicia onboarding)
+    - notifica_financeiro_chief (registra receita)
+    - atualiza_crm (status = PAID)
+  pagamento_falhou:
+    - tenta_novamente_24h
+    - envia_lembrete_whatsapp
+    - se_3_falhas: escalate_financeiro_chief (cobrança humana)
+  timeout: 15_dias
+  on_error: escalate_to_financeiro_chief
+```
+
+---
+
+## Lex (Docs Chief)
+**Trigger:** Cliente pagou, onboarding concluído
+```yaml
+lex:
+  event:
+    - 'onboarding_d3' (Welcome ativou apresentação advogado)
+    - 'contrato_pago' (Cash confirma pagamento)
+  precondition: 'pagamento_confirmado + area_juridica_definida'
+  action:
+    - gera_checklist_documentos (por area juridica)
+    - envia_lista_whatsapp + email + area_membros
+    - monitora_uploads_documentos
+  documentos_completos:
+    - valida_todos_obrigatorios
+    - monta_ficha_tecnica
+    - notifica_juridico_chief (caso pronto)
+  documentos_pendentes:
+    - lembrete_d_plus_3
+    - lembrete_d_plus_7 (urgente)
+    - lembrete_d_plus_15 (último aviso)
+    - se_d30_sem_docs: escalate_coo + notifica_cliente_risco
+  timeout: 30_dias
+  on_error: escalate_to_coo
+```
+
+---
+
+## Juris (Juridico Chief)
+**Trigger:** Documentos completos, ficha técnica montada
+```yaml
+juris:
+  event:
+    - 'ficha_tecnica_pronta' (Lex confirma docs completos)
+  precondition: '100%_docs_obrigatorios + ficha_tecnica'
+  action:
+    - distribui_caso_para_advogado
+    - define_advogado_responsavel (por area + disponibilidade)
+    - cria_timeline_estimada
+    - notifica_cliente (advogado + timeline)
+    - inicia_producao_juridica
+  caso_distribuido:
+    - notifica_themis (acompanhamento processual)
+    - atualiza_area_membros (status = EM ANDAMENTO)
+  on_error: escalate_to_coo
+```
+
+---
+
+## Themis (Processo Juridico Agent)
+**Trigger:** Caso distribuído no tribunal
+```yaml
+themis:
+  event:
+    - 'caso_distribuido_tribunal' (Juris confirma)
+    - 'nova_movimentacao_pje' (PJe/Astrea webhook)
+    - 'prazo_vencendo_5dias' (alerta automático)
+  action:
+    - monitora_andamento_processual (PJe, Astrea)
+    - traduz_movimentacao_para_linguagem_cliente
+    - atualiza_area_membros
+    - envia_whatsapp_cliente (atualização)
+  prazo_critico:
+    - alerta_advogado_responsavel (d-5)
+    - alerta_juris_chief (d-3)
+    - alerta_coo (d-1)
+  sentenca_recebida:
+    - classifica: favoravel/parcial/desfavoravel
+    - se_favoravel: notifica_cliente + bridge (referral)
+    - se_desfavoravel: ativa_shield (crisis manager)
+  sem_movimentacao_30dias:
+    - notifica_advogado
+    - notifica_cliente ("seu caso está em andamento, sem novidades")
+  on_error: escalate_to_juris
+```
+
+---
+
+## Star (NPS Agent)
+**Trigger:** Interação SAC concluída OU marco do caso atingido
+```yaml
+star:
+  event:
+    - 'ticket_sac_resolvido' (SAC-Chief fecha ticket)
+    - 'marco_caso_atingido' (Themis: petição, audiência, sentença)
+    - 'onboarding_d14' (Welcome completa onboarding)
+    - 'contrato_aniversario_6meses' (scheduler)
+  action:
+    - envia_pesquisa_nps (whatsapp ou area_membros)
+    - coleta_score_0_10
+    - coleta_comentario_opcional
+  nps_recebido:
+    - se_nps_0_6 (detrator): notifica_keeper (churn risk)
+    - se_nps_7_8 (neutro): registra, sem ação
+    - se_nps_9_10 (promotor): notifica_bridge (referral opportunity)
+  nps_nao_respondido:
+    - retry_em_3_dias (1x apenas)
+    - se_nao_respondeu: registra_como_neutro
+  on_error: registra_sem_nps
+```
+
+---
+
+## Maia (Marketing Chief)
+**Trigger:** Semanal (planejamento) + Victoria (insights)
+```yaml
+maia:
+  event:
+    - 'segunda_08am' (planejamento semanal)
+    - 'victoria_insight' (recomendação de BI)
+    - 'catalyst_diretiva' (decisão do Conselho)
+  action_semanal:
+    - revisa_calendario_editorial
+    - define_prioridades_semana
+    - distribui_tasks (Sol, Iris, Rafa, Luna, Neo)
+  action_insight:
+    - ajusta_estrategia_conforme_dados
+    - realoca_orcamento_se_necessario
+  coordena:
+    with: [sol (social), iris (conteudo), rafa (trafego), luna (LP), neo (SEO)]
+  on_error: escalate_to_coo
+```
+
+---
+
+## Rafa (Traffic Manager)
+**Trigger:** Campanha criada/programada OU performance fora do esperado
+```yaml
+rafa:
+  event:
+    - 'campanha_agendada' (Maia agenda)
+    - 'cpa_acima_threshold' (Campaign-Analyst alerta)
+    - 'orcamento_mudou' (Catalyst/CFO ajusta)
+    - 'nova_area_juridica_priorizada' (Conselho decide)
+  action:
+    - cria_ou_otimiza_campanha_meta
+    - define_publico_alvo (por area juridica)
+    - monitora_cpa_roas_diariamente
+  performance:
+    - se_cpa_alto: pausa_adset + testa_alternativa
+    - se_roas_baixo: ajusta_creative + landing_page
+    - se_leads_alto: aumenta_orcamento_gradual
+  on_error: pausa_campanha + notifica_maia
+```
+
+---
+
+## Sol (Social Media Manager) + Iris (Content Creator)
+**Trigger:** Calendario editorial + pipeline Instagram existente
+```yaml
+sol_iris:
+  event:
+    - 'calendario_editorial_atualizado' (Maia publica)
+    - 'conteudo_aprovado' (pipeline WhatsApp approval)
+    - 'daily_post_schedule' (scheduler automático)
+  action:
+    - iris_cria_conteudo (caption + DALL-E imagem)
+    - sol_envia_para_aprovacao_whatsapp
+    - ceo_aprova_ou_rejeita
+    - se_aprovado: publica_no_horario_agendado
+    - analisa_engajamento_24h_apos
+  on_error: notifica_maia
+```
+
+---
+
+## Helena (Financeiro Chief)
+**Trigger:** Pagamento recebido OU vencimento OU cobrança
+```yaml
+helena:
+  event:
+    - 'pagamento_recebido' (Cash confirma)
+    - 'boleto_vence_em_3dias' (scheduler)
+    - 'inadimplencia_detectada' (>15 dias sem pagamento)
+  action:
+    - registra_receita
+    - atualiza_fluxo_caixa
+    - gera_nota_fiscal (se aplicável)
+  cobranca:
+    - d_plus_3: lembrete_gentil (whatsapp)
+    - d_plus_7: lembrete_urgente (email + whatsapp)
+    - d_plus_15: cobranca_formal + notifica_coo
+    - d_plus_30: avalia_suspensao_caso
+  on_error: escalate_to_cfo
+```
+
+---
+
+## Mirror (Perfil Emocional Agent)
+**Trigger:** Novo cliente (onboarding) OU interação com indicadores emocionais
+```yaml
+mirror:
+  event:
+    - 'onboarding_d1' (Welcome apresenta cliente)
+    - 'interacao_emocional_detectada' (SAC ou Patricia sinaliza)
+    - 'ludopatia_novo_cliente' (area especifica)
+  action:
+    - mapeia_ferida_emocional
+    - identifica_linguagem_do_amor
+    - define_camada_de_apego
+    - gera_diretriz_comunicacao_para_todos_agentes
+  alertas:
+    - se_risco_crise: notifica_shield
+    - se_bloqueio_emocional: notifica_telino
+  on_error: registra_perfil_basico
+```
+
+---
+
+## Atlas (COO Chief)
+**Trigger:** Diário + alertas + escalações
+```yaml
+atlas:
+  event:
+    - 'daily_07am' (relatório operacional)
+    - 'escalacao_recebida' (qualquer agente)
+    - 'quality_gate_falhou' (qualquer handoff)
+    - 'coo_to_ceo_needed' (decisão estratégica)
+  action_diaria:
+    - coleta_status_todos_chiefs
+    - gera_relatorio_diario (slack + sheets)
+    - identifica_gargalos
+    - distribui_prioridades_do_dia
+  action_escalacao:
+    - avalia_urgencia
+    - roteia_para_agente_correto
+    - monitora_resolucao
+    - se_nao_resolvido_24h: escala_para_ceo
+  on_error: notifica_ceo_direto
+```
+
+---
+
 ## Regras Globais de Automação
 
 ```yaml
@@ -319,6 +652,39 @@ global_rules:
   timeout_default: '5 minutos'
   retry_max: 3
   retry_intervalo: 'exponencial (1min, 3min, 10min)'
+
+  # HORÁRIO DE ENVIO (OBRIGATÓRIO para todos os agentes)
+  horario_envio:
+    whatsapp:
+      seg_sex: '08:00 - 20:00'
+      sabado: '09:00 - 14:00'
+      domingo: 'NÃO ENVIAR (exceto crise Shield)'
+      feriados: 'NÃO ENVIAR (exceto crise Shield)'
+    email:
+      seg_sex: '07:00 - 21:00'
+      sabado: '08:00 - 18:00'
+      domingo: '10:00 - 16:00 (apenas automáticos)'
+    fuso_horario: 'America/Recife (BRT -3)'
+    excecao: 'Shield (crise) pode enviar 24/7'
+    fila: 'mensagens fora do horário entram em fila e saem no próximo horário válido'
+
+  # LGPD / OPT-OUT (OBRIGATÓRIO para todos os agentes)
+  lgpd:
+    opt_out:
+      - 'SE cliente pedir para parar: TODOS os agentes param IMEDIATAMENTE'
+      - 'Marca lead/cliente como OPT_OUT no Supabase'
+      - 'Remove de TODAS as sequências automáticas'
+      - 'NÃO tenta reengajar por 6 meses'
+      - 'Após 6 meses: apenas 1 tentativa de reativação (com consentimento explícito)'
+    consentimento:
+      - 'Primeiro contato: informar que usa IA para comunicação'
+      - 'Registrar consentimento no CRM'
+      - 'Permitir opt-out a qualquer momento ("digite SAIR")'
+    dados_sensiveis:
+      - 'Ludopatia, violência doméstica = dados sensíveis (LGPD Art. 11)'
+      - 'Requer consentimento específico e destacado'
+      - 'Armazenamento com criptografia extra'
+      - 'Acesso restrito: apenas agentes que PRECISAM'
 
   escalacao_automatica:
     if: 'agente_falha_2x'
@@ -346,6 +712,13 @@ global_rules:
     - decisao_de_encerrar_caso
     - churn_cliente_vip
     - discrepancia_financeira_>_1pct
+
+  # DEAD LETTER QUEUE (mensagens que falharam)
+  dead_letter:
+    storage: 'supabase.dead_letter_queue'
+    retry: '3x com backoff exponencial'
+    alerta: 'slack #integracao se >5 mensagens na fila'
+    review: 'TI-Chief revisa diariamente'
 ```
 
 ---

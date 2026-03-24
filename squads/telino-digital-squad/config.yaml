@@ -496,14 +496,96 @@ handoffs:
     quality_gate:
       criteria: 'Patricia fez D+1 e D+3, sem resposta'
 
-  # Comercial -> Financeiro
-  comercial-to-financeiro:
-    trigger: 'Reuniao realizada com sucesso'
+  # Patricia -> Meeting Scheduler (agendar reunião)
+  patricia-to-meeting:
+    trigger: 'Lead qualificado com score >60, pronto para agendar'
     from: comercial-patricia
+    to: meeting-scheduler
+    quality_gate:
+      score_minimum: 60
+      criteria: 'Score >60 + dados coletados + area juridica definida'
+
+  # Meeting -> Proposal (reunião realizada)
+  meeting-to-proposal:
+    trigger: 'Reuniao realizada com presença confirmada'
+    from: meeting-scheduler
+    to: proposal-agent
+    quality_gate:
+      criteria: 'Presença confirmada + area juridica + valor estimado'
+
+  # Meeting no-show -> Patricia (reagendamento)
+  meeting-noshow-to-patricia:
+    trigger: 'Cliente nao compareceu na reuniao (15min apos horario)'
+    from: meeting-scheduler
+    to: comercial-patricia
+    quality_gate:
+      criteria: 'No-show detectado + tentativa de reagendamento'
+
+  # Proposal -> Contract (proposta aceita)
+  proposal-to-contract:
+    trigger: 'Proposta aceita pelo cliente'
+    from: proposal-agent
+    to: contract-agent
+    quality_gate:
+      criteria: 'Proposta aceita + valor confirmado + dados completos'
+
+  # Proposal rejeitada -> Marcus (negociação)
+  proposal-rejected-to-marcus:
+    trigger: 'Proposta rejeitada por objeção (preço, tempo, confiança)'
+    from: proposal-agent
+    to: negociador-agent
+    quality_gate:
+      criteria: 'Objeção identificada + dados do cliente disponíveis'
+
+  # Contract -> Cash (contrato assinado)
+  contract-to-cash:
+    trigger: 'Contrato assinado eletronicamente'
+    from: contract-agent
+    to: checkout-payment-agent
+    quality_gate:
+      criteria: 'Contrato assinado + valor definido + forma de pagamento'
+
+  # Cash -> Onboarding (pagamento confirmado) — já existe contrato-to-onboarding
+
+  # Cash -> Financeiro (registro de receita)
+  cash-to-financeiro:
+    trigger: 'Pagamento confirmado (PIX, boleto, cartão)'
+    from: checkout-payment-agent
     to: financeiro-chief
     quality_gate:
-      score_minimum: 70
-      criteria: 'Reuniao aconteceu + lead qualificado + area juridica definida'
+      criteria: 'Pagamento OK + valor + forma + cliente identificado'
+
+  # Onboarding -> SAC (D+14 transferência)
+  onboarding-to-sac:
+    trigger: 'Onboarding concluído (D+14 após pagamento)'
+    from: onboarding-agent
+    to: sac-chief
+    quality_gate:
+      criteria: 'Kit enviado + area membros ativa + advogado apresentado + check-in D+7 feito'
+
+  # Onboarding -> Docs (coleta documentos)
+  onboarding-to-docs:
+    trigger: 'Onboarding D+3 (apresentação advogado + início coleta docs)'
+    from: onboarding-agent
+    to: docs-chief
+    quality_gate:
+      criteria: 'Advogado definido + area juridica + checklist gerado'
+
+  # Processo -> Shield (sentença adversa)
+  processo-to-shield:
+    trigger: 'Sentença desfavorável recebida'
+    from: processo-juridico-agent
+    to: crisis-manager-agent
+    quality_gate:
+      criteria: 'Sentença classificada como desfavorável + cliente notificável'
+
+  # Processo -> Bridge (sentença favorável)
+  processo-to-referral:
+    trigger: 'Caso concluído com resultado positivo'
+    from: processo-juridico-agent
+    to: referral-manager-agent
+    quality_gate:
+      criteria: 'Resultado positivo + NPS >=9 + consentimento'
 
   # Financeiro -> Documentacao
   financeiro-to-docs:
@@ -596,8 +678,8 @@ workflows:
 
   contratacao:
     file: workflows/wf-contratacao.yaml
-    agents: [financeiro-chief, proposal-agent, contract-agent, checkout-payment-agent]
-    description: 'Reuniao -> Proposta -> Contrato -> Pagamento -> Checkout'
+    agents: [meeting-scheduler, proposal-agent, negociador-agent, contract-agent, checkout-payment-agent, financeiro-chief, onboarding-agent]
+    description: 'Reuniao (Stella) -> Proposta (Deal) -> [Objeção? Marcus] -> Contrato (Sign) -> Pagamento (Cash) -> Onboarding (Welcome)'
 
   documentacao:
     file: workflows/wf-documentacao.yaml
