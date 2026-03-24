@@ -1,0 +1,355 @@
+# 🔄 Automação Triggers — Quando cada agente ATUA
+
+---
+
+## Score (Lead Qualifier)
+**Trigger:** Lead recebido via campanha/organico/indicação
+```yaml
+score:
+  event: 'lead_received'
+  source: [whatsapp, landing_page, instagram, email, indicacao]
+  action:
+    - coleta_dados_minimos
+    - valida_email_phone
+    - calcula_score_0_100
+    - classifica: [quente, morno, frio]
+    - identifica_area_juridica
+    - roteia_para:
+        score: '>40' → comercial-patricia
+        score: '<40' → follow-up-agent (nurture)
+  timeout: 5min
+  on_error: escalate_to_coo
+```
+
+---
+
+## Patricia (Comercial)
+**Trigger:** Lead qualificado (score >40) + disponibilidade
+```yaml
+patricia:
+  event: 'lead_qualified'
+  precondition: 'score >40'
+  action:
+    - inicia_conversa_whatsapp
+    - coleta_dados_detalhados (BANT)
+    - avalia_urgencia
+    - agenda_reuniao_zoom (se score >60)
+    - envia_lembrete_d_minus_1
+    - envia_lembrete_h_minus_1
+  follow_up:
+    d_plus_1: 'gentil reengajamento'
+    d_plus_3: 'urgencia leve'
+  timeout_sem_resposta: 3_dias → passa_para_pulse
+  on_error: escalate_to_sales_chief
+```
+
+---
+
+## Pulse (Follow-up/Nurture)
+**Trigger:** Lead frio (<40) OU D+3 sem resposta de Patricia
+```yaml
+pulse:
+  event:
+    - 'lead_frio' (score <40 via Score)
+    - 'lead_abandoned_d3' (Patricia D+3 sem resposta)
+    - 'reengajamento_30dias' (inativo >30d)
+  action:
+    - envia_conteudo_educativo
+    - sequencia_nurture: [d7, d15, d30]
+    - monitora_engajamento
+    - atualiza_score_dinamicamente
+  requalificacao:
+    if: 'novo_interesse_detectado'
+    then: 'retorna_para_patricia'
+  on_error: marca_como_frio_permanente
+```
+
+---
+
+## Welcome (Onboarding)
+**Trigger:** Contrato assinado + pagamento confirmado
+```yaml
+welcome:
+  event: 'contrato_assinado_e_pago'
+  precondition: 'status = PAID'
+  action:
+    - envia_kit_boas_vindas (email + whatsapp)
+    - cria_conta_area_membros
+    - introduct_advogado_responsavel
+    - envia_guia_escola_consciencia
+  schedule:
+    d_plus_0: 'bem-vindo + links'
+    d_plus_1: 'tutorial area de membros'
+    d_plus_3: 'apresentacao advogado'
+    d_plus_7: 'check-in primeira semana'
+    d_plus_14: 'transferencia para SAC'
+  on_error: notify_coo_and_telino
+```
+
+---
+
+## Shield (Crisis Manager)
+**Trigger:** Cliente em crise detectado por Score/Mirror/SAC
+```yaml
+shield:
+  event:
+    - 'cliente_em_crise' (detectado por Score ou Mirror)
+    - 'ameaca_suicida' (immediate escalation)
+    - 'sentenca_adversa' (decision emocional)
+    - 'cliente_irritado_extremo' (SAC score >8)
+  action:
+    hour_1:
+      - detecta_urgencia
+      - classifica_tipo_crise
+      - ativa_protocolo_especifico
+    hour_2:
+      - redige_comunicacao_empática
+      - coordena_com_telino (suporte)
+      - coordena_com_marcus (negociacao)
+    hour_4:
+      - entrega_resposta_cliente
+      - valida_recepcao
+    day_1:
+      - follow_up
+      - avalia_proximas_acoes
+  escalate_if: 'suicidal_ideation' → CVV_188 + humano_immediate
+  on_error: escalate_coo_and_telino
+```
+
+---
+
+## Keeper (Churn Manager)
+**Trigger:** Churn score >60 OU padrões de desengajamento
+```yaml
+keeper:
+  event:
+    - 'churn_score_gerado' (Victoria calcula diariamente)
+    - 'cliente_inativo_10dias'
+    - 'documentos_parados_15dias'
+    - 'nao_abriu_email_7dias'
+  churn_score:
+    0-30: 'saudavel' → sem_acao
+    31-60: 'atencao' → check_in_automatico
+    61-80: 'risco_alto' → intervencao_pessoal_telino
+    81-100: 'critico' → resgate_marcus + regalado
+  action:
+    if: 'score 31-60'
+      - envia_check_in (whatsapp humanizado)
+      - oferece_suporte_extra
+    if: 'score 61-80'
+      - ativa_telino (mentora acolhimento)
+      - oferece_sessao_escola_consciencia
+    if: 'score 81-100'
+      - ativa_marcus (negociacao de permanencia)
+      - oferta_especial_retencao
+  retry:
+    max_tentativas: 3
+    intervalo: 3_dias
+  on_recover: volta_para_saudavel, comemora_com_slack
+  on_churn: documenta_motivo_para_victoria_analytics
+```
+
+---
+
+## Bridge (Referral Manager)
+**Trigger:** NPS >9 OU cliente com resultado positivo
+```yaml
+bridge:
+  event:
+    - 'nps_score_recebido' (de nps-agent)
+    - 'caso_concluido_positivamente'
+  precondition: 'nps >=9 AND resultado_positivo'
+  action:
+    - oferece_programa_indicacao
+    - explica_beneficios (desconto, VIP status, Escola gratuita)
+    - ativa_tracking_referral
+    - cria_codigo_unico_cliente
+  reward_tiers:
+    1_indicacao: 'R$ 100 desconto no proximo caso'
+    3_indicacoes: 'VIP status + Escola gratuita por 6 meses'
+    5_indicacoes: 'Embaixador program + comissao 5%'
+  campaign:
+    email: 'convite_para_indicar.html'
+    whatsapp: 'template_indicacao.txt'
+    social: 'post_compartilha.txt'
+  tracking:
+    link_unico: 'telino.com/ref/[codigo]'
+    atualiza_supabase: 'referral_source para cada novo lead'
+    reporta_victoria: 'analytics de origem'
+  on_error: notify_marketing_chief
+```
+
+---
+
+## Victoria (BI/Dados)
+**Trigger:** Diário às 8am ou evento de interesse
+```yaml
+victoria:
+  event:
+    - 'daily_schedule_08:00' (batch job)
+    - 'lead_count_change_50pct' (anomaly)
+    - 'conversao_abaixo_threshold' (alert)
+    - 'churn_aumentou_5pct' (trend)
+  action_diaria:
+    - coleta_metricas_ultimas_24h
+    - compara_com_baseline
+    - identifica_anomalias
+    - gera_dashboard_google_sheets
+    - envia_slack_diario_operacao
+  action_anomalia:
+    - calcula_impacto
+    - identifica_causa_provavel
+    - envia_alerta_slack_critico
+    - notifica_proprietario_metrica
+  recomendacao_automatica:
+    if: 'ludopatia_conversion_down_10pct'
+      → 'sugere_marcus_renegociacao_oferta'
+    if: 'churn_up_5pct'
+      → 'sugere_keeper_intervencao'
+    if: 'lead_volume_up_30pct'
+      → 'sugere_operacao_escalar_patricia'
+  on_error: manual_review_victoria_humano
+```
+
+---
+
+## Marcus (Negociador)
+**Trigger:** Lead hesitante OU oportunidade de renegociacao
+```yaml
+marcus:
+  event:
+    - 'lead_com_objecao_preco' (Patricia sinaliza)
+    - 'cliente_quer_descontar' (SAC sinaliza)
+    - 'churn_score_81_100' (Keeper escala)
+    - 'victoria_recomenda_upsell' (BI sugere)
+  action:
+    - analisa_objecao
+    - prepara_3_angulos_resposta
+    - coordena_com_sophia_neura (dinamica sistêmica + neuro)
+    - apresenta_oferta_reestruturada
+    - acompanha_decisao
+  integracao:
+    with: [sophia (familiar), neura (neuro), victoria (dados)]
+    request: 'contexto_completo_cliente'
+    deliverable: 'proposta_customizada'
+  on_success: 'contrato_renegociado → documentar_learnings'
+  on_failure: 'escala_para_regalado_mentoring'
+```
+
+---
+
+## SAC + FAQ
+**Trigger:** Cliente envia mensagem via WhatsApp ou área de membros
+```yaml
+sac:
+  event: 'cliente_ticket_recebido'
+  source: [whatsapp, member_area, email]
+  action:
+    - classifica_ticket (n1/n2/n3)
+    - se_n1:
+        - wiki_faq_entrega_resposta (automático)
+        - registra_satisfacao
+    - se_n2:
+        - roteia_especialista
+        - seta_sla_24h
+    - se_n3:
+        - escalate_humano
+        - seta_sla_4h
+        - notifica_coo
+  integracao:
+    with: [wiki_faq (respostas), shield (crise detect)]
+    if: 'cliente_em_crise' → 'ativa_shield'
+  on_error: escalate_humano_imediato
+```
+
+---
+
+## Conselho Automação (Catalyst)
+**Trigger:** Decisão do Conselho G7
+```yaml
+catalyst:
+  event: 'conselho_decisao_documentada'
+  precondition: 'em OSMOSE protocol'
+  action:
+    - normaliza_decisao_para_operacao
+    - identifica_agentes_responsaveis
+    - cria_tasks_automaticas
+    - envia_diretivas_slack
+    - agenda_checkins
+    - configura_metricas_acompanhamento
+  exemplo:
+    decisao: 'aumentar ludopatia em 30%'
+    automacao:
+      - aumenta_orcamento_trafego_30pct
+      - cria_campanha_meta_ludopatia
+      - realoca_patricia_time_ludopatia
+      - cria_metric_alert_conversion_ludopatia
+      - agenda_check_in_dia_7
+  on_error: escalate_coo_e_conselho
+```
+
+---
+
+## WhatsApp Gateway (Echo)
+**Trigger:** CEO envia mensagem no WhatsApp pessoal
+```yaml
+echo:
+  event: 'ceo_whatsapp_message_recebida'
+  action:
+    - normaliza_comando
+    - identifica_intent (operacional/estrategico/urgent)
+    - executa_automacao_correspondente
+    - confirma_recebimento_ceo
+    - publica_no_slack_operacao
+  comandos_exemplo:
+    'aumenta ludopatia 30%' → ativa_catalyst_workflow
+    'qual conversao ludopatia' → query_victoria_bi
+    'falta doc cliente xyz' → query_docs_chief
+    'crise em recife' → alert_shield_team
+  on_error: pede_clarificacao_ceo
+```
+
+---
+
+## Regras Globais de Automação
+
+```yaml
+global_rules:
+
+  timeout_default: '5 minutos'
+  retry_max: 3
+  retry_intervalo: 'exponencial (1min, 3min, 10min)'
+
+  escalacao_automatica:
+    if: 'agente_falha_2x'
+      then: 'coo_chief_alerta'
+    if: 'cliente_em_crise'
+      then: 'shield_immediate'
+    if: 'bloqueador_operacional'
+      then: 'coo_alerta_critico'
+
+  logging_obrigatorio:
+    - evento_disparado
+    - agente_responsavel
+    - timestamp
+    - resultado (sucesso/erro)
+    - dados_relevantes
+    - proximo_passo
+
+  audit_trail:
+    storage: 'supabase.automacao_logs'
+    retention: '6 meses'
+    alertas: 'abertura automática de caso para irregularidades'
+
+  human_approval_required:
+    - contrato_valores_acima_r50k
+    - decisao_de_encerrar_caso
+    - churn_cliente_vip
+    - discrepancia_financeira_>_1pct
+```
+
+---
+
+**Status:** ⏳ IMPLEMENTAR em n8n (Week 1)
+**Owner:** TI-Chief + Catalyst
+**Próximo:** Decision trees e templates
