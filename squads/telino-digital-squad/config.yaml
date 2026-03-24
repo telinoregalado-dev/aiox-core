@@ -27,13 +27,21 @@ metadata:
   location: 'Recife/PE - Brasil'
 
 tiers:
+  tier_minus1:
+    name: 'Conselho Estratégico G7'
+    purpose: 'Decisões estratégicas, visão, cultura, crescimento'
+    agents:
+      - conselho-estrategico
+
   tier_0:
-    name: 'Orquestrador + Consciência'
-    purpose: 'Coordena squads, distribui demandas, governa cultura e tom emocional'
+    name: 'Orquestrador + Consciência + Gateway'
+    purpose: 'Coordena squads, distribui demandas, governa cultura, gateway CEO'
     agents:
       - coo-chief
       - mentor-consciencia-chief
       - mentor-telino
+      - whatsapp-gateway-agent
+      - conselho-automacao-agent
 
   tier_1:
     name: 'Masters'
@@ -68,6 +76,14 @@ tiers:
       - ti-chief
       - perfil-emocional-agent
       - escola-consciencia-agent
+      - negociador-agent
+      - bi-dados-agent
+      - constelacao-familiar-agent
+      - neurociencia-agent
+      - onboarding-agent
+      - crisis-manager-agent
+      - churn-manager-agent
+      - referral-manager-agent
 
   tier_3:
     name: 'Suporte'
@@ -81,6 +97,16 @@ tiers:
       - report-agent
 
 agents:
+  # === TIER -1 - CONSELHO ESTRATÉGICO ===
+  conselho-estrategico:
+    file: agents/conselho-estrategico.md
+    tier: -1
+    persona: 'Conselho G7 (Estratégia)'
+    focus: 'Decisões estratégicas, visão, crescimento, cultura — 7 conselheiros'
+    commands:
+      - '*sessao-estrategica'
+      - '*osmose'
+
   # === TIER 0 - ORQUESTRADOR ===
   coo-chief:
     file: agents/coo-chief.md
@@ -114,6 +140,22 @@ agents:
     commands:
       - '*acolher'
       - '*sessao-escola'
+
+  whatsapp-gateway-agent:
+    file: agents/whatsapp-gateway-agent.md
+    tier: 0
+    persona: 'Echo (Gateway WhatsApp CEO)'
+    focus: 'Traduz comandos do CEO via WhatsApp em ações operacionais'
+    commands:
+      - '*comando-ceo'
+
+  conselho-automacao-agent:
+    file: agents/conselho-automacao-agent.md
+    tier: 0
+    persona: 'Catalyst (Automação Estratégica)'
+    focus: 'Traduz decisões do Conselho G7 em automações operacionais'
+    commands:
+      - '*executar-decisao'
       - '*orientacao-familiar'
       - '*check-in'
       - '*presenca'
@@ -166,7 +208,7 @@ agents:
     file: agents/comercial-patricia.md
     tier: 1
     persona: 'Patricia (Comercial)'
-    focus: 'Recepcao humanizada, qualificacao, agendamento Zoom, follow-up'
+    focus: 'Conversa humanizada pos-Score, qualificacao profunda, agendamento Zoom, follow-up D+1/D+3'
     commands:
       - '*atender-lead'
       - '*qualificar'
@@ -243,8 +285,8 @@ agents:
   lead-qualifier:
     file: agents/lead-qualifier.md
     tier: 2
-    persona: 'Score (Qualificacao)'
-    focus: 'Lead scoring 0-100, classificacao quente/morno/frio, BANT adaptado'
+    persona: 'Score (Pre-Qualificacao Automatica)'
+    focus: 'Lead scoring automatico 0-100 ANTES de Patricia, classificacao, roteamento quente→Patricia, frio→Pulse'
 
   meeting-scheduler:
     file: agents/meeting-scheduler.md
@@ -255,8 +297,8 @@ agents:
   follow-up-agent:
     file: agents/follow-up-agent.md
     tier: 2
-    persona: 'Pulse (Follow-up)'
-    focus: 'Sequencias D+1, D+3, D+7, D+15, reengajamento, nurture'
+    persona: 'Pulse (Follow-up/Nurture)'
+    focus: 'Nurture longo prazo D+7/D+15/D+30, reengajamento leads frios, conteudo educativo'
 
   proposal-agent:
     file: agents/proposal-agent.md
@@ -332,6 +374,57 @@ agents:
       - '*engajamento-escola'
       - '*onboarding-escola'
 
+  # === TIER 2 - NEGOCIAÇÃO E INTELIGÊNCIA ===
+  negociador-agent:
+    file: agents/negociador-agent.md
+    tier: 2
+    persona: 'Marcus (Negociação Estratégica)'
+    focus: 'Negociação Harvard+Ury, reframing psicológico, close, estruturação de ofertas'
+
+  bi-dados-agent:
+    file: agents/bi-dados-agent.md
+    tier: 2
+    persona: 'Victoria (BI/Dados)'
+    focus: 'Business Intelligence, dashboards, segmentação, previsão, recomendações acionáveis'
+
+  # === TIER 2 - ESPECIALISTAS COMPORTAMENTAIS ===
+  constelacao-familiar-agent:
+    file: agents/constelacao-familiar-agent.md
+    tier: 2
+    persona: 'Sophia (Constelação Familiar Sistêmica)'
+    focus: 'Dinâmicas familiares, ordens do amor, padrões transgeracionais, resolução sistêmica'
+
+  neurociencia-agent:
+    file: agents/neurociencia-agent.md
+    tier: 2
+    persona: 'Neura (Neurociência Comportamental)'
+    focus: 'Ciclos neurológicos de vício, neuroplasticidade, recuperação neural, mapeamento cerebral'
+
+  # === TIER 2 - CICLO DE VIDA DO CLIENTE ===
+  onboarding-agent:
+    file: agents/onboarding-agent.md
+    tier: 2
+    persona: 'Welcome (Onboarding)'
+    focus: 'Primeiro contato pós-contrato, boas-vindas, orientação, ativação do cliente'
+
+  crisis-manager-agent:
+    file: agents/crisis-manager-agent.md
+    tier: 2
+    persona: 'Shield (Gestão de Crises)'
+    focus: 'Clientes em crise emocional, comunicação sensível, escalonamento rápido, contenção'
+
+  churn-manager-agent:
+    file: agents/churn-manager-agent.md
+    tier: 2
+    persona: 'Keeper (Retenção e Anti-Churn)'
+    focus: 'Scoring de churn, detecção proativa, retenção, win-back, alertas de risco'
+
+  referral-manager-agent:
+    file: agents/referral-manager-agent.md
+    tier: 2
+    persona: 'Bridge (Programa de Indicação)'
+    focus: 'Programa de indicação, recompensas, tracking, NPS→indicação, embaixadores'
+
   # === TIER 3 - SUPORTE ===
   performance-analyst:
     file: agents/performance-analyst.md
@@ -370,14 +463,38 @@ agents:
     focus: 'Relatorios diarios/semanais/mensais, exportacao, distribuicao'
 
 handoffs:
-  # Marketing -> Comercial
-  marketing-to-comercial:
-    trigger: 'Lead gerado por campanha Meta ou organico'
-    from: [traffic-manager, social-media-manager]
+  # Marketing -> Score (pre-qualificacao automatica)
+  marketing-to-score:
+    trigger: 'Lead gerado por campanha Meta, organico ou indicacao'
+    from: [traffic-manager, social-media-manager, landing-page-architect]
+    to: lead-qualifier
+    quality_gate:
+      criteria: 'Lead deve ter pelo menos telefone ou email valido'
+
+  # Score -> Patricia (lead quente/morno >40)
+  score-to-patricia:
+    trigger: 'Lead pre-qualificado com score >40'
+    from: lead-qualifier
     to: comercial-patricia
     quality_gate:
-      score_minimum: 70
-      criteria: 'Lead deve ter telefone valido + fonte identificada'
+      score_minimum: 40
+      criteria: 'Score >40 + area juridica identificada'
+
+  # Score -> Pulse (lead frio <40)
+  score-to-pulse:
+    trigger: 'Lead frio com score <40'
+    from: lead-qualifier
+    to: follow-up-agent
+    quality_gate:
+      criteria: 'Score <40 + dados minimos para nurture'
+
+  # Patricia -> Pulse (D+3 sem resposta)
+  patricia-to-pulse:
+    trigger: 'Lead nao respondeu apos D+3 comercial'
+    from: comercial-patricia
+    to: follow-up-agent
+    quality_gate:
+      criteria: 'Patricia fez D+1 e D+3, sem resposta'
 
   # Comercial -> Financeiro
   comercial-to-financeiro:
@@ -439,11 +556,43 @@ handoffs:
     quality_gate:
       criteria: 'COO apresenta opcoes + recomendacao, nao apenas problema'
 
+  # Contrato -> Onboarding (boas-vindas)
+  contrato-to-onboarding:
+    trigger: 'Contrato assinado + pagamento confirmado'
+    from: [contract-agent, checkout-payment-agent]
+    to: onboarding-agent
+    quality_gate:
+      criteria: 'Contrato assinado + pagamento OK + dados completos'
+
+  # SAC -> Crisis Manager (cliente em crise)
+  sac-to-crisis:
+    trigger: 'Cliente em crise emocional detectado por Care'
+    from: sac-chief
+    to: crisis-manager-agent
+    quality_gate:
+      criteria: 'Indicadores de crise identificados (ameaca, desespero, raiva extrema)'
+
+  # NPS -> Churn Manager (NPS baixo)
+  nps-to-churn:
+    trigger: 'NPS <7 ou sinais de insatisfacao'
+    from: nps-agent
+    to: churn-manager-agent
+    quality_gate:
+      criteria: 'NPS <7 + historico de interacoes negativas'
+
+  # NPS -> Referral Manager (NPS alto)
+  nps-to-referral:
+    trigger: 'NPS >=9 + caso concluido com sucesso'
+    from: nps-agent
+    to: referral-manager-agent
+    quality_gate:
+      criteria: 'NPS >=9 + resultado positivo + consentimento do cliente'
+
 workflows:
   lead-pipeline:
     file: workflows/wf-lead-pipeline.yaml
-    agents: [traffic-manager, comercial-patricia, lead-qualifier, meeting-scheduler, follow-up-agent]
-    description: 'Campanha -> Lead -> Qualificacao -> Agendamento -> Reuniao'
+    agents: [traffic-manager, lead-qualifier, comercial-patricia, meeting-scheduler, follow-up-agent]
+    description: 'Campanha -> Score (pre-qual) -> Patricia (conversa) -> Agendamento -> Reuniao | Frio -> Pulse (nurture)'
 
   contratacao:
     file: workflows/wf-contratacao.yaml
@@ -484,6 +633,16 @@ workflows:
     file: workflows/wf-acolhimento-ludopatia.yaml
     agents: [mentor-telino, perfil-emocional-agent, escola-consciencia-agent]
     description: 'Programa 8 semanas: Reconhecimento -> Compreensão -> Escolha -> Reconstrução + Apoio Familiar'
+
+  ciclo-vida-cliente:
+    file: workflows/wf-ciclo-vida-cliente.yaml
+    agents: [onboarding-agent, sac-chief, churn-manager-agent, crisis-manager-agent, nps-agent, referral-manager-agent]
+    description: 'Onboarding -> SAC -> NPS -> Churn/Retencao | Crise -> Crisis Manager | NPS alto -> Indicacao'
+
+  inteligencia-negociacao:
+    file: workflows/wf-inteligencia-negociacao.yaml
+    agents: [bi-dados-agent, negociador-agent, constelacao-familiar-agent, neurociencia-agent]
+    description: 'Dados -> Insight -> Negociacao estrategica + Suporte comportamental (Sophia + Neura)'
 
 areas_juridicas:
   - id: ludopatia
