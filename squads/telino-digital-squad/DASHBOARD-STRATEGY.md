@@ -376,29 +376,183 @@ Catalyst executa automação
 
 ---
 
-## 8️⃣ AJUSTES NECESSÁRIOS ANTES DE BACKEND
+## 8️⃣ DECISÕES FINAIS (Confirmadas)
 
-**CRÍTICO:**
-- [ ] Definir exatamente qual role acessa qual rota (RLS policy)
-- [ ] Decidir: dashboard atualiza a cada 10s? 1min? manual refresh?
-- [ ] Definir cor dos alertas (vermelho=ação já em progresso vs bloqueador)
-- [ ] Decidir se admin TEM botão "forçar ação" ou nunca toca
+### 1️⃣ ALERTAS — Amarelo/Vermelho
 
-**IMPORTANTE:**
-- [ ] Wireframes dos 6 dashboards (CEO, COO, Patricia, Helena, Juris, Admin)
-- [ ] Decidir: cliente vê caso em tempo real ou atualiza 1x/dia?
-- [ ] Definir se Chiefs podem editar status ou apenas ler
+```
+AMARELO (Atenção) — Ação já em progresso
+├─ Shield ativo em cliente
+├─ Marcus negociando objeção
+├─ Keeper intervindo (churn 61-80)
+├─ Patricia tentando reagendamento
+└─ "Equipe está tratando, monitor"
 
-**NICE-TO-HAVE:**
-- [ ] Dark mode
-- [ ] Exportar PDF do caso/relatório
-- [ ] Integração Slack para notificações
+VERMELHO (Crítico) — Bloqueador, precisa intervenção imediata
+├─ Ameaça suicida detectada (Shield é notificado, não espera)
+├─ Pagamento atrasado >30 dias (Financeiro escalou, CEO decide)
+├─ Integração fora do ar 1h+ (TI tentou, CEO intervém)
+├─ Erro não tratado em n8n (retry falhou 3x)
+└─ "Ação CEO necessária agora"
+```
+
+### 2️⃣ REFRESH RATE — CEO Manual F5 (Seguro + Prático)
+
+```
+CEO Dashboard:
+├─ Load na primeira entrada: dados últimas 24h
+├─ Refresh manual (botão F5 ou "Atualizar agora")
+├─ Timeline: atualiza ao clicar em alerta específico
+└─ Razão: CEO não precisa de real-time 24/7, semanal ok
+
+COO Dashboard:
+├─ Atualiza a cada 30s (automático)
+├─ Alerta crítico: 3s atualização quando aparece
+└─ Razão: COO cuida operação tempo-real
+
+Chiefs Dashboards:
+├─ Atualiza a cada 1min (automático)
+├─ Click no lead/cliente: atualiza 5s
+└─ Razão: não precisa ultra-rápido, mas operacional
+
+Cliente:
+├─ Atualiza 1x/dia (automático, 8am)
+├─ Ou manual quando entra na área
+└─ Razão: documentos, pagamento não mudam 10x/dia
+```
+
+### 3️⃣ LEADS VISIBILITY — Todos os leads (Transparência)
+
+```
+Patricia vê:
+├─ [EM ATENDIMENTO] Seus 6 leads atuais
+├─ [HISTÓRICO] Todos os 347 leads que já atendeu (semanas anteriores)
+├─ [PERFORMANCE] Conversão pessoal vs média equipe
+└─ Filtra por: semana, área, status
+
+Victoria (BI) vê:
+├─ Todas as leads (347) → análise e recomendações
+└─ Todos os dados de conversão (quem converteu, quem não)
+
+Admin vê:
+├─ Todos os dados (audit compliance)
+└─ Pode exportar: CSV, relatórios
+```
+
+### 4️⃣ ADMIN — Botão "Forçar Ação" com Protocolo Seguro
+
+```
+Cenário: Cliente pagou mas não aparece em Welcome
+Admin clica: [Forçar: Executar Welcome D+0]
+     ↓
+Sistema exibe:
+┌─────────────────────────────────────┐
+│ ⚠️  CONFIRMAR AÇÃO FORÇADA          │
+├─────────────────────────────────────┤
+│ Ação: Enviar kit Welcome (D+0)      │
+│ Cliente: João Silva (ID: 127)       │
+│ Razão prevista: Atraso automação    │
+│                                     │
+│ Consequências:
+│ • João receberá kit + link área    │
+│ • Timeline passará para D+0        │
+│ • Será logado em audit             │
+│ • CEO recebe notificação           │
+│                                     │
+│ Protocolo:
+│ 1. Admin escreve motivo (obrigatório)
+│ 2. Seleciona: "Entendo riscos"
+│ 3. Aguarda aprovação CEO (60s timeout)
+│ 4. Se OK CEO: executa
+│ 5. Se timeout/não OK: cancela
+│                                     │
+│ Motivo: [_________________]        │
+│                                     │
+│ [ Cancelar ] [ Sim, executa ]      │
+└─────────────────────────────────────┘
+     ↓
+Se confirmado:
+├─ Action executada em background
+├─ Slack notifica: #integracao "[Admin: João Welcome forçado]"
+├─ Log armazenado: supabase.admin_actions
+│   {
+│     "admin_id": "byte",
+│     "action": "force_welcome",
+│     "client_id": 127,
+│     "reason": "atraso automação",
+│     "ceo_approved": true,
+│     "timestamp": "2026-03-24T14:23:45Z",
+│     "status": "success"
+│   }
+└─ Cliente recebe kit 5 minutos depois
+```
+
+**Admin pode forçar:**
+```
+✅ Permitidos (comum):
+- Executar onboarding D+X (atraso automação)
+- Enviar lembrete N1 (fila)
+- Reagendar reunião (no-show)
+- Reenviar documentos checklist
+- Ativar Shield manualmente (crise detectada, n8n falhou)
+
+⚠️  Requer CEO approval (60s):
+- Desligar cliente (churn)
+- Cancelar contrato
+- Devolver pagamento
+- Escalar para Regalado pessoalmente
+
+❌ NUNCA permitido (arquitetado fora de admin):
+- Editar score do lead (Score faz scoring, não admin)
+- Alterar valor de contrato (Deal estabeleceu, admin não toca)
+- Criar novo advogado (Juris gerencia, admin não toca)
+```
 
 ---
 
-**Status:** ⏳ ANTES DE BACKEND, RESPONDER:
-1. Cores/urgência dos alertas?
-2. Refresh rate dos dashboards?
-3. RLS policies (quem vê o quê)?
-4. Admin tem controle ou nunca toca?
+## 9️⃣ RLS POLICIES (By Role — Supabase)
+
+```sql
+-- CEO: vê tudo
+SELECT * FROM leads, clientes, casos, metricas WHERE true
+SELECT * FROM admin_actions (logs)
+
+-- COO: vê operação + alertas
+SELECT * FROM leads WHERE status IN ['em_atendimento', 'qualificado']
+SELECT * FROM escalacoes, timeout_alerts
+SELECT admin_actions WHERE created_by = $1 (seus próprios)
+
+-- Patricia: vê seus leads + histórico
+SELECT * FROM leads WHERE comercial_id = auth.uid()
+SELECT * FROM leads WHERE comercial_id = auth.uid() AND DATE(created_at) > NOW() - INTERVAL '3 months'
+
+-- Cliente: vê seu caso
+SELECT * FROM clientes WHERE id = auth.uid()
+SELECT * FROM casos WHERE cliente_id = auth.uid()
+SELECT * FROM documentos WHERE cliente_id = auth.uid()
+
+-- Admin: vê tudo + logs
+SELECT * (igual CEO)
+SELECT * FROM admin_actions
+```
+
+---
+
+## 1️⃣0️⃣ PRÓXIMO: PRONTO PARA BACKEND
+
+**Decisões Finalizadas:**
+- ✅ Alertas: Amarelo (em progresso) / Vermelho (crítico)
+- ✅ Refresh CEO: Manual F5
+- ✅ Leads: Todos vistos (Patricia vê seus + histórico)
+- ✅ Admin: Força ação com protocolo (confirmação + CEO approval se crítico)
+- ✅ RLS: Role-based por Supabase
+- ✅ Real-time: COO 30s, Chiefs 1min, Cliente 1x/dia, CEO manual
+
+**Pronto para iniciar:**
+1. Backend: Node.js + Express (GET endpoints read-only)
+2. Database: Supabase schema + RLS policies
+3. Frontend: HTML/CSS/JS + WebSocket (WebSocket apenas para COO/live)
+4. n8n: Workflows críticos (leads → Patricia, documentos → Lex, etc)
+
+**Kickoff Backend:** Próxima sessão?
 
