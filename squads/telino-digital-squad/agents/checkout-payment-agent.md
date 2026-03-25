@@ -160,6 +160,80 @@ PAGAMENTO CONFIRMADO (webhook)
 7. Email de boas-vindas com login
 ```
 
+## Pagamentos Recorrentes
+
+### Contrato Mensal
+```
+Exemplo: Consultoria Legal Contínua - R$ 1.200/mês
+
+D-7: Lembrete ao cliente ("Sua assinatura renova em 7 dias")
+D-1: Último aviso ("Amanhã debitaremos R$ 1.200")
+
+D+0:
+  - Executa cobrança automática via PIX/boleto/cartão
+  - Se sucesso: renova por mais 1 mês
+  - Se falha (cartão recusado): tenta novamente em 3 dias
+
+D+3 (se falhou): Tenta segunda vez
+D+7 (se ainda falhou): Escalate para Financeiro Chief (cobrança humana)
+```
+
+### Contrato Anual (com opção de parcela)
+```
+Exemplo: Ação Judicial Completa - R$ 12.000/ano (OU 12x R$ 1.000)
+
+OPÇÃO 1: Pagamento Anual (desc 10%)
+D-15: Lembrete ao cliente ("Sua anuidade vence em 15 dias")
+D-7: Segundo aviso ("Importante: última semana para pagar")
+D+0: Executa cobrança R$ 10.800 (com desconto)
+
+OPÇÃO 2: Pagamento Parcelado (12 mensalidades)
+Funciona igual ao "Contrato Mensal" acima
+D-7, D-1, D+0, D+3, D+7 (mesma sequência)
+```
+
+### Cancelamento de Recorrência
+```
+SE cliente pedir para cancelar (no WhatsApp ou área membros):
+1. Registra cancelamento com motivo
+2. BLOQUEIA próximo agendamento
+3. Permite conclusão de caso em andamento (não cancela jurídico)
+4. Oferece opção de pausa por 1 mês (ao invés de cancelamento)
+5. Se VIP client (5+ anos): escalate para Regalado (oferta de permanência)
+```
+
+### Falha de Pagamento Recorrente
+```
+PAGAMENTO AGENDADO (D+30 para mensal, D+365 para anual)
+    |
+    v
+Tenta cobrança automática
+    |
+    ├─ SUCESSO: Webhook confirma, Welcome inicia ativação
+    |
+    ├─ FALHA (cartão recusado, boleto não clicado, PIX expirou)
+    |   |
+    |   v
+    |   D+1: Lembrete automático ("Seu pagamento recusado, tente novamente")
+    |   Link de retry gerado
+    |   |
+    |   ├─ Cliente paga: Webhook confirma
+    |   |
+    |   └─ Cliente NÃO paga
+    |       |
+    |       v
+    |       D+3: Segundo aviso + novo link
+    |       |
+    |       ├─ Cliente paga: Webhook confirma
+    |       |
+    |       └─ Cliente NÃO paga
+    |           |
+    |           v
+    |           D+7: Escalate para Financeiro Chief
+    |           Helena entra com cobrança humana
+    |           Oferta de renegociação (parcelamento extra, desconto, etc.)
+```
+
 ## Seguranca
 - PCI DSS compliance (para cartao de credito)
 - LGPD: dados de pagamento criptografados

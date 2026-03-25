@@ -39,6 +39,9 @@ patricia:
   follow_up:
     d_plus_1: 'gentil reengajamento'
     d_plus_3: 'urgencia leve'
+  crisis_detection:
+    if: 'cliente_em_crise_detectado' → 'ativa_shield_imediato'
+    indicators: [ameaca_suicida, pressao_emocional_extrema, desespero, choro, ideacao_negativa]
   timeout_sem_resposta: 3_dias → passa_para_pulse
   on_error: escalate_to_sales_chief
 ```
@@ -77,8 +80,12 @@ welcome:
     - cria_conta_area_membros
     - introduct_advogado_responsavel
     - envia_guia_escola_consciencia
+  emotional_mapping:
+    d_plus_0:
+      - 'bem-vindo + links'
+      - 'ativa_mirror para mapeamento emocional'
+      - 'mirror entrega_diretriz_comunicacao para todos_agentes'
   schedule:
-    d_plus_0: 'bem-vindo + links'
     d_plus_1: 'tutorial area de membros'
     d_plus_3: 'apresentacao advogado'
     d_plus_7: 'check-in primeira semana'
@@ -392,7 +399,7 @@ sign:
 cash:
   event:
     - 'contrato_assinado' (Sign confirma)
-    - 'pagamento_recorrente' (vencimento mensal)
+    - 'pagamento_recorrente' (vencimento mensal/anual)
     - 'cobranca_atrasada' (financeiro sinaliza)
   action:
     - gera_link_pagamento (PIX, boleto, cartão)
@@ -402,6 +409,18 @@ cash:
     - notifica_welcome (inicia onboarding)
     - notifica_financeiro_chief (registra receita)
     - atualiza_crm (status = PAID)
+  pagamento_recorrente:
+    if: 'contrato_mensal'
+      - agenda_cobranca_1mes_antes_vencimento
+      - envia_lembrete_d_minus_7
+      - envia_lembrete_d_minus_1
+      - executa_cobranca_automatica (se autorizado)
+    if: 'contrato_anual'
+      - agenda_cobranca_15dias_antes_vencimento
+      - envia_lembrete_d_minus_15
+      - envia_lembrete_d_minus_7
+      - envia_lembrete_d_minus_1
+      - executa_cobranca_automatica (se autorizado)
   pagamento_falhou:
     - tenta_novamente_24h
     - envia_lembrete_whatsapp
@@ -419,6 +438,7 @@ lex:
   event:
     - 'onboarding_d3' (Welcome ativou apresentação advogado)
     - 'contrato_pago' (Cash confirma pagamento)
+    - 'validacao_mensal_docs' (scheduler 1x/mes)
   precondition: 'pagamento_confirmado + area_juridica_definida'
   action:
     - gera_checklist_documentos (por area juridica)
@@ -433,6 +453,20 @@ lex:
     - lembrete_d_plus_7 (urgente)
     - lembrete_d_plus_15 (último aviso)
     - se_d30_sem_docs: escalate_coo + notifica_cliente_risco
+  expiracao_documentos:
+    trigger: 'scheduler_mensal + validacao_datas'
+    documentos_expirados: [rg, cpf, comprovante_renda, cnpj, certidao_atividade]
+    prazos_validade:
+      - 'RG: 10 anos (renovável)'
+      - 'CPF: indeterminado'
+      - 'Comprovante renda (CND): 6 meses'
+      - 'CNPJ: indeterminado'
+      - 'Certidao atividade: 6 meses'
+    acao_expiracao:
+      - alerta_cliente: 'seus documentos expiram em X dias'
+      - lembrete_d_minus_30: 'renovar antes de vencer'
+      - lembrete_d_minus_7: 'último aviso - renove agora'
+      - se_expirado: 'notifica_advogado + pode_bloquear_andamento'
   timeout: 30_dias
   on_error: escalate_to_coo
 ```

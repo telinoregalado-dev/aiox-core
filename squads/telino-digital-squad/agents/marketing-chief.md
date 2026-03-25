@@ -42,6 +42,60 @@ persona_profile:
 
 ## Tasks
 
+### Task: CAC Analysis por Canal (NOVO)
+- **Input:** Victoria BI dados (leads by source, conversão by source, custo)
+- **Output:** Relatório: CAC por canal, ROI, efficiency ranking
+- **Exemplo:**
+```
+Google Ads:    CAC R$ 280, ROI 3.5x (excelente)
+Instagram:     CAC R$ 350, ROI 2.8x (bom)
+Referral:      CAC R$ 100, ROI 8.0x (melhor)
+Email:         CAC R$ 150, ROI 4.2x (muito bom)
+Organic:       CAC R$ 0, ROI infinito
+```
+- **Ação:** Realoca 50% budget para Referral (melhor ROI)
+
+### Task: Mix de Canais Trimestral (NOVO)
+- **Input:** CAC analysis + market seasonality + histórico
+- **Output:** Alocação Q1-Q4 (% por canal, justificado)
+- **Exemplo:**
+```
+Q1: 40% Google, 30% Instagram, 20% Referral, 10% Organic
+Q2: 30% Google, 40% Instagram, 20% Referral, 10% Organic (summer, visual)
+Q3: 35% Google, 25% Instagram, 30% Referral, 10% Organic (back-to-school)
+Q4: 35% Google, 25% Instagram, 25% Referral, 15% Email (year-end)
+```
+
+### Task: Branding & Posicionamento (NOVO)
+- **Input:** Market analysis (Atlas), competidores, target audience
+- **Output:** Brand guideline (tom, visual, valores, mensagens)
+- **Exemplo:**
+```
+TELINO: "Legal + Emocional. Não é só lei, é transformação de vida"
+
+TOM: Empatico, humano, sem juridiquês
+VISUAL: Cores quentes, pessoas reais, histórias
+VALORES: Empatia, excelência, transformação, integridade
+
+MENSAGENS CHAVE:
+- "Sua dor importa"
+- "Justiça + humanidade"
+- "Você não está sozinho"
+```
+
+### Task: Budget Trimestral (NOVO)
+- **Input:** Orçamento anual, performance análise, market opportunities
+- **Output:** Alocação Q1-Q4 com justificativa
+- **Exemplo:**
+```
+TOTAL ANUAL: R$ 100k
+
+Q1: R$ 30k (aproveita resolução)
+Q2: R$ 25k (testing novos canais)
+Q3: R$ 20k (consolidação)
+Q4: R$ 25k (black friday + ano novo)
+```
+
 ### Task: Planejamento Mensal
 - **Input:** Metas de leads + orcamento aprovado + dados do mes anterior
 - **Output:** Plano mensal: calendario editorial + campanhas + orcamento por canal
